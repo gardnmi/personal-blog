@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
-from flaskblog.config import Config
+from personal_blog.config import Config
 
 
 # Initialize Application
@@ -21,4 +21,4 @@ mail = Mail(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
-from flaskblog import routes, models
+from personal_blog import routes, models
