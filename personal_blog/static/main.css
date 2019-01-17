@@ -13,9 +13,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  /*background-color: #5f788a;*/
   background-image: url("images/retro_stripes_fade.jpg");
-  background-size: 696px 112px;
+  background-color: #1d6184;
+  background-size: 696px 82px;
+  background-repeat: repeat-x;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -116,7 +117,7 @@ a.article-title:hover {
     border-radius: .25rem;
 }
 
-#blog_post { 
+#blog_post {
   padding-top: 40px;
 }
 
