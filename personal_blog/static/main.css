@@ -2,6 +2,10 @@ body {
   background: #fff0cf2e;
   color: #333333;
   margin-top: 5rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #555;
+}
+
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -10,8 +14,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .bg-steel {
   /*background-color: #5f788a;*/
-  background-image: url("images/retro_stripes.jpg");
-  background-size: 696px 100px;
+  background-image: url("images/retro_stripes_fade.jpg");
+  background-size: 696px 112px;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -43,7 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .article-title {
-  color: #444444;
+  color: #555555de;
 }
 
 a.article-title:hover {
@@ -87,4 +91,41 @@ a.article-title:hover {
 
 .account-heading {
   font-size: 2.5rem;
+}
+
+.btn-info {
+    color: #fff;
+    background-color: #1a6283;
+    border-color: #1d6184;
+}
+
+.blog-header {
+    padding-top: 2rem;
+    padding-bottom: .1rem;
+    margin-bottom: 2rem;
+    border-bottom: .05rem solid #eee;
+}
+
+.blog-post {
+    margin-bottom: 3rem;
+}
+
+.sidebar-module-inset {
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: .25rem;
+}
+
+#blog_post { 
+  padding-top: 40px;
+}
+
+.btn-outline-info {
+    color: #1d6184;
+    border-color: #1d6184;
+}
+
+.btn-outline-primary {
+    color: #1d6184;
+    border-color: #1d6184;
 }
