@@ -1,5 +1,5 @@
 body {
-  background: #fafafa;
+  background: #fff0cf2e;
   color: #333333;
   margin-top: 5rem;
 }
@@ -9,11 +9,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  /*background-color: #5f788a;*/
+  background-image: url("images/retro_stripes.jpg");
+  background-size: 696px 100px;
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  color: #fffcf6;
+  /*background-image: url("images/retro_stripes.jpg");*/
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -24,12 +27,19 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
-.content-section {
-  background: #ffffff;
-  padding: 10px 20px;
-  border: 1px solid #dddddd;
-  border-radius: 3px;
-  margin-bottom: 20px;
+
+.navbar-brand {
+  display: inline-block;
+  padding-top: $navbar-brand-padding-y;
+  padding-bottom: $navbar-brand-padding-y;
+  margin-right: $navbar-padding-x;
+  font-size: 2rem;
+  line-height: inherit;
+  white-space: nowrap;
+
+  @include hover-focus {
+    text-decoration: none;
+  }
 }
 
 .article-title {
