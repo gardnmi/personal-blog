@@ -2,12 +2,16 @@
 {% block content %}
     <div class="blog-header">
       <div class="container">
-        <h1 class="blog-title">The Bootstrap Blog</h1>
-        <p class="lead blog-description">An example blog template built with Bootstrap.</p>
+        <h1 class="blog-title" align="center">Summers Grace</h1>
+        <p class="lead blog-description" align="center">
+          Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. 
+          Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. 
+          Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+        </p>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-8 blog-main">
+      <div class="col-sm-12 blog-main">
     {% for post in posts.items %}
           <div class="blog-post">
             <article class="media content-section">
@@ -17,18 +21,20 @@
                   <h2> <a class="article-title" href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
                   <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
                 </div>
-                <p class="article-content">{{ post.content|safe }}</p>
+                <p class="article-content">{{ post.content| truncate(800) | safe }}</p>
               </div>
             </article>
+            <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
           </div>
     {% endfor %}
       </div>
-        <div class="col-sm-3 offset-sm-2 blog-sidebar">
+        <!-- /.blog-sidebar -->
+<!--         <div class="col-sm-3 offset-sm-1 blog-sidebar">
           <div class="sidebar-module sidebar-module-inset">
             <h4>About</h4>
             <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
           </div>
-        </div><!-- /.blog-sidebar -->
+        </div> -->
     </div>
 
     <div class="row">
@@ -38,7 +44,7 @@
         {% if posts.page == page_num %}
           <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
         {% else %}
-          <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+          <a class="btn btn-outline-primary mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
         {% endif %}
       {% else %}
         ...
