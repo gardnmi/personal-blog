@@ -4,9 +4,9 @@
     <div class="col-sm-8 blog-main">
       <div class="blog-post">
         <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          <!-- <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}"> -->
           <div class="media-body">
-            
+
             <div class="article-metadata">
               <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
               <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>

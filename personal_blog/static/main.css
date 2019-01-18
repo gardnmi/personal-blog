@@ -1,5 +1,5 @@
 body {
-  background: #fff0cf2e;
+  background: #fffef8;
   color: #333333;
   margin-top: 5rem;
   font-family: Georgia, "Times New Roman", Times, serif;
@@ -61,8 +61,8 @@ a.article-title:hover {
 }
 
 .article-img {
-  height: 65px;
-  width: 65px;
+
+  width: 170px;
   margin-right: 16px;
 }
 
