@@ -7,26 +7,23 @@
       </div>
     </div>
     <div class="row">
+      <div class="col-sm-8 blog-main">
     {% for post in posts.items %}
-
-          <div class="col-sm-8 blog-main">
-            <div class="blog-post">
-              <article class="media content-section">
-                <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-                <div class="media-body">
-                  <div class="article-metadata">
-                    <h2> <a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
-                    <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
-                  </div>
-                  <p class="article-content">{{ post.content|safe }}</p>
+          <div class="blog-post">
+            <article class="media content-section">
+              <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <h2> <a class="article-title" href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
+                  <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
                 </div>
-              </article>
-            </div>
+                <p class="article-content">{{ post.content|safe }}</p>
+              </div>
+            </article>
           </div>
-
     {% endfor %}
-    
-        <div class="col-sm-3 offset-sm-1 blog-sidebar">
+      </div>
+        <div class="col-sm-3 offset-sm-2 blog-sidebar">
           <div class="sidebar-module sidebar-module-inset">
             <h4>About</h4>
             <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
@@ -34,6 +31,8 @@
         </div><!-- /.blog-sidebar -->
     </div>
 
+    <div class="row">
+      <div class="col-sm-8 offset-sm-1 blog-main">
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
       {% if page_num %}
         {% if posts.page == page_num %}
@@ -45,4 +44,6 @@
         ...
       {% endif %}
     {% endfor %}
+      </div>
+    </div>
 {% endblock content %}

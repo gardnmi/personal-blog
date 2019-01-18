@@ -1,13 +1,14 @@
 import os
-import utils
 import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from personal_blog import app, db, bcrypt, mail
 from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm  # , RegistrationForm
 from personal_blog.models import User, Post
+from personal_blog.utils import save_picture
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
+from slugify import slugify
 
 
 @app.route("/")
@@ -72,7 +73,7 @@ def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
-            picture_file = utils.save_picture(form.picture.data)
+            picture_file = save_picture(form.picture.data)
             current_user.image_file = picture_file
 
         current_user.username = form.username.data
@@ -98,7 +99,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, slug=utils.slug(form.title.data), content=form.content.data, author=current_user)
+        post = Post(title=form.title.data, slug=slugify(form.title.data), content=form.content.data, author=current_user)
 
         db.session.add(post)
         db.session.commit()
@@ -111,14 +112,14 @@ def new_post():
 
 
 @app.route("/post/<slug>")
-def post(post_id):
+def post(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
     return render_template('post.html', title=post.title, post=post)
 
 
 @app.route("/post/<slug>/update", methods=['GET', 'POST'])
 @login_required
-def update_post(post_id):
+def update_post(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
 
     if post.author != current_user:
@@ -134,7 +135,7 @@ def update_post(post_id):
 
         flash('Your post has been updated!', 'success')
 
-        return redirect(url_for('post', post_id=post.id))
+        return redirect(url_for('post', slug=slug))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
@@ -143,10 +144,10 @@ def update_post(post_id):
                            form=form, legend='Update Post')
 
 
-@app.route("/post/<int:post_id>/delete", methods=['POST'])
+@app.route("/post/<slug>/delete", methods=['POST'])
 @login_required
-def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
+def delete_post(slug):
+    post = Post.query.filter_by(slug=slug).first_or_404()
 
     if post.author != current_user:
         abort(403)

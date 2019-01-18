@@ -8,11 +8,11 @@
           <div class="media-body">
 
             <div class="article-metadata">
-              <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+              <h2><a class="article-title" href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
               <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
               {% if post.author == current_user %}
                 <div>
-                  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', post_id=post.id) }}">Update</a>
+                  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_post', slug=post.slug) }}">Update</a>
                   <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
                 </div>
               {% endif %}
@@ -42,7 +42,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+          <form action="{{ url_for('delete_post', slug=post.slug) }}" method="POST">
             <input class="btn btn-danger" type="submit" value="Delete">
           </form>
         </div>
