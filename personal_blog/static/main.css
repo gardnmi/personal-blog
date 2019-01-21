@@ -1,12 +1,20 @@
+a {
+  color: #1d6184;
+}
+
+a:hover {
+  color: #ff4836;
+}
+
+
 body {
-  background: #ffffff;
+  background: #fffefa;
   color: #333333;
   margin-top: 5rem;
   font-family: Georgia, "Times New Roman", Times, serif;
   color: #555;
 }
 
-}
 
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
@@ -47,15 +55,6 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.article-title {
-  color: #555555de;
-}
-
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
-
 .article-content {
   white-space: pre-line;
 }
@@ -73,7 +72,6 @@ a.article-title:hover {
 }
 
 .article-metadata a:hover {
-  color: #333;
   text-decoration: none;
 }
 
@@ -85,6 +83,7 @@ a.article-title:hover {
 
 .account-img {
   height: 125px;
+  padding-right: 2rem;
   margin-right: 0px;
   margin-bottom: 16px;
 }
@@ -130,10 +129,13 @@ a.article-title:hover {
     border-color: #1d6184;
 }
 
-a {
-    color: #3672a4;
-    text-decoration: none;
-    background-color: transparent;
+
+#tag_pictures {
+    padding-bottom: 1rem;
+
 }
 
+.blog-post-meta {
+  color: #febe50;
+}
 

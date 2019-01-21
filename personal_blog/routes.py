@@ -4,7 +4,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from personal_blog import app, db, bcrypt, mail
 from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm  # , RegistrationForm
-from personal_blog.models import User, Post
+from personal_blog.models import User, Post, Tag
 from personal_blog.utils import save_picture
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
@@ -99,7 +99,10 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, slug=slugify(form.title.data), content=form.content.data, author=current_user)
+        tags = Tag.query.filter(Tag.tag_name.in_(form.tags.data)).all()
+
+        post = Post(title=form.title.data, slug=slugify(form.title.data),
+                    content=form.content.data, author=current_user, tags=tags)
 
         db.session.add(post)
         db.session.commit()
@@ -107,7 +110,7 @@ def new_post():
         flash('Your post has been created!', 'success')
 
         return redirect(url_for('home'))
-    return render_template('create_post.html', title='New Post',
+    return render_template('create_update_post.html', title='New Post',
                            form=form, legend='New Post')
 
 
@@ -128,8 +131,10 @@ def update_post(slug):
     form = PostForm()
 
     if form.validate_on_submit():
+        tags = Tag.query.filter(Tag.tag_name.in_(form.tags.data)).all()
         post.title = form.title.data
         post.content = form.content.data
+        post.tags = tags
 
         db.session.commit()
 
@@ -140,7 +145,7 @@ def update_post(slug):
         form.title.data = post.title
         form.content.data = post.content
 
-    return render_template('create_post.html', title='Update Post',
+    return render_template('create_update_post.html', title='Update Post',
                            form=form, legend='Update Post')
 
 
@@ -158,6 +163,44 @@ def delete_post(slug):
     flash('Your post has been deleted!', 'success')
 
     return redirect(url_for('home'))
+
+
+@app.route("/tags", methods=['GET', 'POST'])
+@login_required
+def tags():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+
+        current_user.username = form.username.data
+        current_user.alias = form.alias.data
+
+        db.session.commit()
+
+        flash('Tags has been updated!', 'success')
+
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.alias.data = current_user.alias
+
+    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+
+    return render_template('account.html', title='Account',
+                           image_file=image_file, form=form)
+
+
+@app.route("/tag/<string:tag_name>")
+def tag_posts(tag_name):
+    page = request.args.get('page', 1, type=int)
+    tag = Tag.query.filter(Tag.tag_name.contains(tag_name)).first_or_404()
+
+    posts = Post.query.filter(Post.tags.contains(tag))\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('tag_posts.html', posts=posts, tag=tag)
 
 
 # @app.route("/user/<string:username>")
