@@ -25,9 +25,11 @@ def my_function():
             db.session.add(user)
             db.session.commit()
 
-            python_tag = Tag(tag_name='python', image_file='python.jpg')
-            machine_learning_tag = Tag(tag_name='machine_learning', image_file='machine_learning.png')
-            db.session.add_all([python_tag, machine_learning_tag])
+            python_tag = Tag(tag_name='Python', slug='python', image_file='python.png')
+            machine_learning_tag = Tag(tag_name='Machine Learning', slug='machine-learning', image_file='machine_learning.png')
+            flask_tag = Tag(tag_name='Flask', slug='flask', image_file='flask.png')
+
+            db.session.add_all([python_tag, machine_learning_tag, flask_tag])
             db.session.commit()
 
             user = User.query.get(int(1))

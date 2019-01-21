@@ -21,22 +21,8 @@ def home():
 
 @app.route("/about")
 def about():
+    print(Tag.query.with_entities(Tag.tag_name, Tag.slug).all())
     return render_template('about.html', title='About')
-
-
-# @app.route("/register", methods=['GET', 'POST'])
-# def register():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('home'))
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-#         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-#         db.session.add(user)
-#         db.session.commit()
-#         flash('Your account has been created! You are now able to log in', 'success')
-#         return redirect(url_for('login'))
-#     return render_template('register.html', title='Register', form=form)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -99,7 +85,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        tags = Tag.query.filter(Tag.tag_name.in_(form.tags.data)).all()
+        tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
 
         post = Post(title=form.title.data, slug=slugify(form.title.data),
                     content=form.content.data, author=current_user, tags=tags)
@@ -131,7 +117,7 @@ def update_post(slug):
     form = PostForm()
 
     if form.validate_on_submit():
-        tags = Tag.query.filter(Tag.tag_name.in_(form.tags.data)).all()
+        tags = Tag.query.filter(Tag.slug.in_(form.tags.data)).all()
         post.title = form.title.data
         post.content = form.content.data
         post.tags = tags
@@ -143,12 +129,14 @@ def update_post(slug):
         return redirect(url_for('post', slug=slug))
 
     elif request.method == 'GET':
+        print(post.tags)
         form.title.data = post.title
         form.content.data = post.content
 
         tag_list = []
         for tag in post.tags:
-            tag_list.append(tag.tag_name)
+            print(tag.slug)
+            tag_list.append(tag.slug)
 
         form.tags.data = tag_list
 
@@ -189,6 +177,7 @@ def tags():
         flash('Tags has been updated!', 'success')
 
         return redirect(url_for('account'))
+
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.alias.data = current_user.alias
@@ -199,10 +188,10 @@ def tags():
                            image_file=image_file, form=form)
 
 
-@app.route("/tag/<string:tag_name>")
-def tag_posts(tag_name):
+@app.route("/tag/<string:slug>")
+def tag_posts(slug):
     page = request.args.get('page', 1, type=int)
-    tag = Tag.query.filter(Tag.tag_name.contains(tag_name)).first_or_404()
+    tag = Tag.query.filter(Tag.slug.contains(slug)).first_or_404()
 
     posts = Post.query.filter(Post.tags.contains(tag))\
         .order_by(Post.date_posted.desc())\
@@ -262,3 +251,18 @@ def tag_posts(tag_name):
 #         flash('Your password has been updated! You are now able to log in', 'success')
 #         return redirect(url_for('login'))
 #     return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+# @app.route("/register", methods=['GET', 'POST'])
+# def register():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('home'))
+#     form = RegistrationForm()
+#     if form.validate_on_submit():
+#         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+#         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+#         db.session.add(user)
+#         db.session.commit()
+#         flash('Your account has been created! You are now able to log in', 'success')
+#         return redirect(url_for('login'))
+#     return render_template('register.html', title='Register', form=form)

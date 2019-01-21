@@ -22,4 +22,4 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 
 
-from personal_blog import routes, models
+from personal_blog import routes, models, handlers

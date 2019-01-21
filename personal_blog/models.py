@@ -35,8 +35,8 @@ class User(db.Model, UserMixin):
 
 
 posts_and_tags = db.Table('posts_and_tags',
-                db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
-                db.Column('page_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
+                          db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True),
+                          db.Column('page_id', db.Integer, db.ForeignKey('post.id'), primary_key=True)
                           )
 
 
@@ -55,5 +55,6 @@ class Post(db.Model):
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(20), unique=True, nullable=False)
     tag_name = db.Column(db.String(20), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
