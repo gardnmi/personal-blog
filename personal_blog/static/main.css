@@ -60,9 +60,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .article-img {
+  width: 50px;
 
-  width: 170px;
-  margin-right: 16px;
 }
 
 .article-metadata {
@@ -130,12 +129,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-#tag_pictures {
-    padding-bottom: 1rem;
-
-}
-
 .blog-post-meta {
   color: #febe50;
+  margin-bottom: 0rem;
 }
-

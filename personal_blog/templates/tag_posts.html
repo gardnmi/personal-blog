@@ -1,20 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1 class="mb-3">
+<h1 class="mb-3" align="center">
    <pre> </pre>
+   <img class="img-fluid" src="{{ url_for('static', filename='tag_pics/' + tag.image_file) }}" id="tag_pictures" >
 </h1>
 <div class="row">
-   <div class="col-sm-2">
-      <img class="img-fluid rounded-circle article-img" src="{{ url_for('static', filename='tag_pics/' + tag.image_file) }}" >
-   </div>
-   <div class="col-sm-10 blog-main">
-      {% for post in posts.items %} 
+   <div class="col-sm-12 blog-main">
+      {% for post in posts.items %}
       <div class="blog-post">
          <article class="media content-section">
             <div class="media-body">
                <div class="article-metadata">
                   <h2> <a class="article-title" href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
-                  <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} 
+                  <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }}
                      <a>{{ post.author.username }}</a>
                </div>
                <p class="article-content">{{ post.content|safe }}</p>

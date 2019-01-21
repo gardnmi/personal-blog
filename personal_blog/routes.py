@@ -141,9 +141,16 @@ def update_post(slug):
         flash('Your post has been updated!', 'success')
 
         return redirect(url_for('post', slug=slug))
+
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
+
+        tag_list = []
+        for tag in post.tags:
+            tag_list.append(tag.tag_name)
+
+        form.tags.data = tag_list
 
     return render_template('create_update_post.html', title='Update Post',
                            form=form, legend='Update Post')
