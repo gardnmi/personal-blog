@@ -21,7 +21,6 @@ def home():
 
 @app.route("/about")
 def about():
-    print(Tag.query.with_entities(Tag.tag_name, Tag.slug).all())
     return render_template('about.html', title='About')
 
 
@@ -197,6 +196,18 @@ def tag_posts(slug):
         .order_by(Post.date_posted.desc())\
         .paginate(page=page, per_page=5)
     return render_template('tag_posts.html', posts=posts, tag=tag)
+
+
+@app.route("/admin")
+@login_required
+def admin():
+    return render_template('about.html', title='About')
+
+
+@app.route("/admin/edit_tags")
+@login_required
+def edit_tags():
+    return render_template('about.html', title='About')
 
 
 # @app.route("/user/<string:username>")

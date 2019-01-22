@@ -2,6 +2,8 @@ from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from personal_blog import db, login_manager, app
 from flask_login import UserMixin
+from sqlalchemy import or_
+from personal_blog.lib.util_sqlalchemy import ResourceMixin
 
 
 @login_manager.user_loader
@@ -9,7 +11,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class User(db.Model, UserMixin):
+class User(ResourceMixin, UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     alias = db.Column(db.String(20), unique=True, nullable=False)
@@ -40,7 +42,7 @@ posts_and_tags = db.Table('posts_and_tags',
                           )
 
 
-class Post(db.Model):
+class Post(ResourceMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     slug = db.Column(db.String(100), unique=True, nullable=False)
@@ -53,8 +55,25 @@ class Post(db.Model):
         return f"Post('{self.title}', '{self.date_posted}')"
 
 
-class Tag(db.Model):
+class Tag(ResourceMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slug = db.Column(db.String(20), unique=True, nullable=False)
     tag_name = db.Column(db.String(20), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+
+    @classmethod
+    def search(cls, query):
+        """
+        Search a resource by 1 or more fields.
+
+        :param query: Search query
+        :type query: str
+        :return: SQLAlchemy filter
+        """
+        if not query:
+            return ''
+
+        search_query = '%{0}%'.format(query)
+        search_chain = (Tag.tag_name.ilike(search_query))
+
+        return or_(*search_chain)
