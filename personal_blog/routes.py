@@ -1,14 +1,15 @@
-import os
-import secrets
-from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
-from personal_blog import app, db, bcrypt, mail
-from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, RequestResetForm, ResetPasswordForm  # , RegistrationForm
+from personal_blog import app, db, bcrypt
+from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm
 from personal_blog.models import User, Post, Tag
 from personal_blog.utils import save_picture
 from flask_login import login_user, current_user, logout_user, login_required
-from flask_mail import Message
 from slugify import slugify
+from sqlalchemy import text
+# from flask_mail import Message
+# import os
+# import secrets
+# from PIL import Image
 
 
 @app.route("/")
@@ -102,6 +103,7 @@ def new_post():
 @app.route("/post/<slug>")
 def post(slug):
     post = Post.query.filter_by(slug=slug).first_or_404()
+    print(post)
     return render_template('post.html', title=post.title, post=post)
 
 
@@ -159,9 +161,9 @@ def delete_post(slug):
     return redirect(url_for('home'))
 
 
-@app.route("/tags", methods=['GET', 'POST'])
+@app.route("/edit_tag", methods=['GET', 'POST'])
 @login_required
-def tags():
+def edit_tag():
     form = UpdateAccountForm()
     if form.validate_on_submit():
         if form.picture.data:
@@ -183,8 +185,8 @@ def tags():
 
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
 
-    return render_template('account.html', title='Account',
-                           image_file=image_file, form=form)
+    return render_template('account.html', title='Admin',
+                           image_file=image_file, form=form,)
 
 
 @app.route("/tag/<string:slug>")
@@ -201,13 +203,48 @@ def tag_posts(slug):
 @app.route("/admin")
 @login_required
 def admin():
-    return render_template('about.html', title='About')
+    return render_template('about.html', title='Admin')
 
 
-@app.route("/admin/edit_tags")
+@app.route("/admin/tags")
 @login_required
-def edit_tags():
-    return render_template('about.html', title='About')
+def tags():
+    print(request.args.get('sort', 'created_on'))
+
+    search_form = SearchForm()
+    bulk_form = BulkDeleteForm()
+
+    sort_by = User.sort_by(request.args.get('sort', 'created_on'),
+                           request.args.get('direction', 'desc'))
+
+    order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
+
+    tags = Tag.query \
+        .filter(Tag.search(request.args.get('q', ''))) \
+        .order_by(text(order_values)).all()
+
+    return render_template('tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Admin')
+
+
+@app.route('/admin/tags/bulk_delete', methods=['POST'])
+def tags_bulk_delete():
+    form = BulkDeleteForm()
+
+    if form.validate_on_submit():
+        ids = Tag.get_bulk_action_ids(request.form.get('scope'),
+                                      request.form.getlist('bulk_ids'),
+                                      query=request.args.get('q', '')
+                                      )
+
+        delete_count = Tag.bulk_delete(ids)
+
+        flash('{0} tag(s) were scheduled to be deleted.'.format(delete_count),
+              'success')
+    else:
+        flash('No tags were deleted, something went wrong.', 'error')
+
+    return redirect(url_for('tags'))
+
 
 
 # @app.route("/user/<string:username>")

@@ -11,19 +11,21 @@
   {% endif %}
 
   {% if sort == field and direction == 'asc' %}
+    {% set css_direction = "fas fa-sort-down" %}
     {% set direction = 'desc' %}
   {% else %}
+    {% set css_direction = "fas fa-sort-up" %}
     {% set direction = 'asc' %}
   {% endif %}
 
   {% if sort == field %}
-    {% set css = direction %}
+    {% set css = css_direction %}
   {% else %}
-    {% set css = 'sort' %}
+    {% set css = "fas fa-sort" %}
   {% endif %}
 
   <a class="{{ css }}" href="{{ url_for(request.endpoint,
-                                        <!-- q=q, -->
+                                        q=q,
                                         sort=field,
                                         direction=direction,
                                         **request.view_args) }}">{{ label }}</a>

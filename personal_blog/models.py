@@ -76,4 +76,4 @@ class Tag(ResourceMixin, db.Model):
         search_query = '%{0}%'.format(query)
         search_chain = (Tag.tag_name.ilike(search_query))
 
-        return or_(*search_chain)
+        return search_chain

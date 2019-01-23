@@ -1,0 +1,76 @@
+{% extends "layout.html" %}
+{% import 'macros/items.html' as items %}
+{% import 'macros/form.html' as f with context %}
+
+
+{% block content %}
+
+  {{ f.search('tags') }}
+
+  {% if tags.total == 0 %}
+    <h3>No results found</h3>
+    
+    {% if request.args.get('q') %}
+      <p>Try limiting or removing your search terms.</p>
+    {% else %}
+      <p>There are no tags present,
+         you should <a href="{{ url_for('') }}">sign up</a>.</p>
+    {% endif %}
+  {% else %}
+    {% call f.form_tag('tags_bulk_delete') %}
+      
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              <label for="select_all"></label>
+              <input id="select_all" name="select_all" type="checkbox">
+            </th>
+            <th class="col-header">
+              {{ items.sort('created_on', 'Created On') }}
+            </th>
+            <th class="col-header">
+              {{ items.sort('tag_name', 'Tags') }}
+            </th>
+            <th id="bulk_actions" colspan="4">
+              <div class="form-inline">
+                {{ f.field(bulk_form.scope, inline=True) }}
+                  <button type="submit"
+                          class="btn btn-danger btn-sm">
+                    Delete items
+                  </button>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for tag in tags %}
+          <tr>
+            <td>
+              <label for="bulk_ids"></label>
+              <input class="checkbox-item" id="bulk_ids" name="bulk_ids"
+                     type="checkbox" value="{{ tag.id }}">
+            </td>
+            <td>
+                {{ tag.created_on.strftime('%B %d, %Y') }} 
+            </td>
+            <td>
+              <a href="{{ url_for('tag_posts', slug=tag.slug) }}">
+                <div class="pull-left">
+                  <i><img class="img-fluid rounded-circle article-img" 
+                          src="{{ url_for('static', filename='tag_pics/' + tag.image_file) }}" >  
+                          {{ tag.tag_name }}
+                  </i>
+                </div>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% endcall %}
+
+  {% endif %}
+
+
+{% endblock content %}

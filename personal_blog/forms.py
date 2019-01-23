@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, SelectMultipleField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from personal_blog.models import User, Tag
 
 
@@ -58,6 +58,18 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+
+class SearchForm(FlaskForm):
+    q = StringField('Search terms', validators=[Optional(), Length(1, 256)])
+
+
+class BulkDeleteForm(FlaskForm):
+    scope = SelectField('Privileges',
+                        choices=[('all_selected_items', 'All selected items'),
+                                 ('all_search_results', 'All search results')],
+                        validators=[DataRequired()]
+                        )
 
 
 # class RegistrationForm(FlaskForm):
