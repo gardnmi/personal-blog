@@ -43,6 +43,11 @@ class PostForm(FlaskForm):
     submit = SubmitField('Submit')
 
 
+class TagForm(FlaskForm):
+    name = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+
+
 class RequestResetForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')

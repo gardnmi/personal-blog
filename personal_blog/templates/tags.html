@@ -1,15 +1,21 @@
-{% extends "layout.html" %}
-{% import 'macros/items.html' as items %}
-{% import 'macros/form.html' as f with context %}
+{% extends "admin.html" %}
 
+{% block admin %}
 
-{% block content %}
-
-  {{ f.search('tags') }}
+  <form action="{{ url_for('tags') }}" method="get"
+        id="" class="" role="form">
+    {{ form.hidden_tag() }}
+    <pre> </pre>
+    <div class="form-group">
+      <input type="text" class="form-control"
+             id="q" name="q" value="{{ request.args.get('q', '') }}"
+             placeholder="Search by typing, then press enter...">
+    </div>
+  </form>
 
   {% if tags.total == 0 %}
     <h3>No results found</h3>
-    
+
     {% if request.args.get('q') %}
       <p>Try limiting or removing your search terms.</p>
     {% else %}
@@ -17,8 +23,10 @@
          you should <a href="{{ url_for('') }}">sign up</a>.</p>
     {% endif %}
   {% else %}
-    {% call f.form_tag('tags_bulk_delete') %}
-      
+
+  <form action="{{ url_for('tags_bulk_delete') }}" method="get"
+        id="" class="" role="form">
+    {{ form.hidden_tag() }}
       <table class="table">
         <thead>
           <tr>
@@ -27,14 +35,61 @@
               <input id="select_all" name="select_all" type="checkbox">
             </th>
             <th class="col-header">
-              {{ items.sort('created_on', 'Created On') }}
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'created_on' %}
+              {% set label = 'Created On' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('tags',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+
             </th>
             <th class="col-header">
-              {{ items.sort('tag_name', 'Tags') }}
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'tag_name' %}
+              {% set label = 'Tag' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('tags',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
             </th>
             <th id="bulk_actions" colspan="4">
               <div class="form-inline">
-                {{ f.field(bulk_form.scope, inline=True) }}
+                <select class="form-control"
+                        id="scope"
+                        inline name="scope"
+                        required>
+                          <option value="all_selected_items">All selected items</option>
+                          <option value="all_search_results">All search results</option>
+                </select>
                   <button type="submit"
                           class="btn btn-danger btn-sm">
                     Delete items
@@ -44,6 +99,7 @@
           </tr>
         </thead>
         <tbody>
+
         {% for tag in tags %}
           <tr>
             <td>
@@ -52,13 +108,13 @@
                      type="checkbox" value="{{ tag.id }}">
             </td>
             <td>
-                {{ tag.created_on.strftime('%B %d, %Y') }} 
+                {{ tag.created_on.strftime('%B %d, %Y') }}
             </td>
             <td>
               <a href="{{ url_for('tag_posts', slug=tag.slug) }}">
                 <div class="pull-left">
-                  <i><img class="img-fluid rounded-circle article-img" 
-                          src="{{ url_for('static', filename='tag_pics/' + tag.image_file) }}" >  
+                  <i><img class="img-fluid rounded-circle article-img"
+                          src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" >
                           {{ tag.tag_name }}
                   </i>
                 </div>
@@ -68,9 +124,8 @@
         {% endfor %}
         </tbody>
       </table>
-    {% endcall %}
-
+    </form>
   {% endif %}
 
 
-{% endblock content %}
+{% endblock admin %}

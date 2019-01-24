@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from personal_blog import app, db, bcrypt
-from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm
+from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm, TagForm
 from personal_blog.models import User, Post, Tag
 from personal_blog.utils import save_picture
 from flask_login import login_user, current_user, logout_user, login_required
@@ -9,7 +9,7 @@ from sqlalchemy import text
 # from flask_mail import Message
 # import os
 # import secrets
-# from PIL import Image
+from PIL import Image
 
 
 @app.route("/")
@@ -74,7 +74,7 @@ def account():
         form.username.data = current_user.username
         form.alias.data = current_user.alias
 
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for('static', filename='images/profile_pics/' + current_user.image_file)
 
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
@@ -95,8 +95,29 @@ def new_post():
 
         flash('Your post has been created!', 'success')
 
-        return redirect(url_for('home'))
+        return redirect(url_for('post', slug=post.slug))
     return render_template('create_update_post.html', title='New Post',
+                           form=form, legend='New Post')
+
+
+@app.route("/tag/new", methods=['GET', 'POST'])
+@login_required
+def new_tag():
+    form = TagForm()
+    if form.validate_on_submit():
+
+        post = Post(tag_name=form.name.data, slug=slugify(form.name.data))
+
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            post.image_file = picture_file
+
+        post.save()
+
+        flash('Your tag has been created!', 'success')
+
+        return redirect(url_for('tags'))
+    return render_template('create_update_tag.html', title='New tag',
                            form=form, legend='New Post')
 
 
@@ -200,22 +221,15 @@ def tag_posts(slug):
     return render_template('tag_posts.html', posts=posts, tag=tag)
 
 
-@app.route("/admin")
-@login_required
-def admin():
-    return render_template('about.html', title='Admin')
-
-
 @app.route("/admin/tags")
 @login_required
 def tags():
-    print(request.args.get('sort', 'created_on'))
 
     search_form = SearchForm()
     bulk_form = BulkDeleteForm()
 
-    sort_by = User.sort_by(request.args.get('sort', 'created_on'),
-                           request.args.get('direction', 'desc'))
+    sort_by = Tag.sort_by(request.args.get('sort', 'created_on'),
+                          request.args.get('direction', 'desc'))
 
     order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
 
@@ -223,7 +237,7 @@ def tags():
         .filter(Tag.search(request.args.get('q', ''))) \
         .order_by(text(order_values)).all()
 
-    return render_template('tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Admin')
+    return render_template('tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Tags')
 
 
 @app.route('/admin/tags/bulk_delete', methods=['POST'])
@@ -244,7 +258,6 @@ def tags_bulk_delete():
         flash('No tags were deleted, something went wrong.', 'error')
 
     return redirect(url_for('tags'))
-
 
 
 # @app.route("/user/<string:username>")

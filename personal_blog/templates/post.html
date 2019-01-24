@@ -10,7 +10,7 @@
                             <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
                             {% for tag in post.tags %}
                             <a href="{{ url_for('tag_posts', slug=tag.slug) }}" , title="{{ tag.tag_name }}">
-                                <img class="img-fluid rounded-circle article-img" src="{{ url_for('static', filename='tag_pics/' + tag.image_file) }}">
+                                <img class="img-fluid rounded-circle article-img" src="{{ url_for('static', filename='images/tags/'+ tag.image_file) }}">
                             </a>
                             {% endfor %}
                         </div>

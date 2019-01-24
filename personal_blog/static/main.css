@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .bg-steel {
-  background-image: url("images/retro_stripes_fade.jpg");
+  background-image: url("images/design/retro_stripes_fade.jpg");
   background-color: #1d6184;
   background-size: 696px 82px;
   background-repeat: repeat-x;
@@ -29,7 +29,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .site-header .navbar-nav .nav-link {
   color: #fffcf6;
-  /*background-image: url("images/retro_stripes.jpg");*/
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -150,18 +149,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 12px;
 }
 
-.sort:after {
-  content: '\f0dc';
-}
-
-.asc:after {
-  content: '\f0dd';
-}
-
-.desc:after {
-  content: '\f0de';
-}
-
 tr:hover {
   background-color: #f5f5f5;
 }
@@ -169,3 +156,7 @@ tr:hover {
 .warning {
   background-color: #ff4836;
 }
+
+
+.sidebar .nav-link.active {
+    color: #ff4836;
