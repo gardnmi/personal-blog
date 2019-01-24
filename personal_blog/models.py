@@ -3,6 +3,8 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from personal_blog import db, login_manager, app
 from flask_login import UserMixin
 from personal_blog.lib.util_sqlalchemy import ResourceMixin
+from sqlalchemy import or_
+from sqlalchemy.orm import aliased
 
 
 @login_manager.user_loader
@@ -48,10 +50,29 @@ class Post(ResourceMixin, db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
     tags = db.relationship('Tag', secondary=posts_and_tags, lazy='subquery', backref=db.backref('pages', lazy=True))
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
+
+    # Move to User so I can access User and Post
+    @classmethod
+    def search(cls, query):
+        """
+        Search a resource by 1 or more fields.
+
+        :param query: Search query
+        :type query: str
+        :return: SQLAlchemy filter
+        """
+        if not query:
+            return ''
+
+        search_query = '%{0}%'.format(query)
+        search_chain = (Post.title.ilike(search_query))
+
+        return search_chain
 
 
 class Tag(ResourceMixin, db.Model):
@@ -59,6 +80,9 @@ class Tag(ResourceMixin, db.Model):
     slug = db.Column(db.String(20), unique=True, nullable=False)
     tag_name = db.Column(db.String(20), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+
+    def __repr__(self):
+        return f"Tag('{self.tag_name}', '{self.image_file}')"
 
     @classmethod
     def search(cls, query):
@@ -76,6 +100,3 @@ class Tag(ResourceMixin, db.Model):
         search_chain = (Tag.tag_name.ilike(search_query))
 
         return search_chain
-
-    def __repr__(self):
-        return f"Tag('{self.tag_name}', '{self.image_file}')"

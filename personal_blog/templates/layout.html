@@ -16,6 +16,8 @@
             href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
             integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
             crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
 
       <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
       <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
@@ -34,10 +36,8 @@
    <body>
       <header class="site-header">
          <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-            <div class="container">
-               <a class="navbar-brand mr-4" href="/">
-                  <img src="{{ url_for('static', filename='images/design/flask.png') }}" style="max-height: 60px; max-width: 65px;"/>
-               </a>
+            <div class="container top-buffer">
+
                <button class="navbar-toggler"
                        type="button"
                        data-toggle="collapse"
@@ -49,19 +49,20 @@
                </button>
                <div class="collapse navbar-collapse" id="navbarToggle">
                   <div class="navbar-nav mr-auto">
-                     <a class="nav-item nav-link" href="{{ url_for('home') }}">//blog</a>
+                     <a class="nav-item nav-link" href="{{ url_for('home') }}">//Michael G.</a>
                   </div>
 
                   <!-- Navbar Right Side -->
                   <div class="navbar-nav">
                      {% if current_user.is_authenticated %}
-                       <a class="nav-item nav-link" href="{{ url_for('new_post') }}">/new post</a>
-                       <a class="nav-item nav-link" href="{{ url_for('tags') }}">/admin</a>
+                       <a class="nav-item nav-link" href="{{ url_for('blog') }}">/blog</a>
+                       <a class="nav-item nav-link" href="{{ url_for('admin_posts') }}">/admin</a>
                        <a class="nav-item nav-link" href="{{ url_for('logout') }}">/logout</a>
                      {% else %}
-                     <a class="nav-item nav-link" href="{{ url_for('about') }}">/about</a>
-                     <a class="nav-item nav-link" href="">/contact</a>
-                     <a class="nav-item nav-link" href="{{ url_for('login') }}">/login</a>
+                       <a class="nav-item nav-link" href="{{ url_for('blog') }}">/blog</a>
+                       <a class="nav-item nav-link" href="{{ url_for('about') }}">/about</a>
+                       <a class="nav-item nav-link" href="">/contact</a>
+                       <a class="nav-item nav-link" href="{{ url_for('login') }}">/login</a>
                      {% endif %}
                   </div>
                </div>

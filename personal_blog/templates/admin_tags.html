@@ -2,7 +2,7 @@
 
 {% block admin %}
 <a class= "nav-link" href="{{ url_for('new_tag') }}" id= "create"> <span data-feather="plus-square"></span> Create New Tag </a>
-  <form action="{{ url_for('tags') }}" method="get"
+  <form action="{{ url_for('admin_tags') }}" method="get"
         id="" class="" role="form">
     {{ form.hidden_tag() }}
     <div class="form-group">
@@ -23,7 +23,7 @@
     {% endif %}
   {% else %}
 
-  <form action="{{ url_for('tags_bulk_delete') }}" method="post"
+  <form action="{{ url_for('admin_tags_bulk_delete') }}" method="post"
         id="" class="" role="form">
     {{ form.hidden_tag() }}
       <table class="table">
@@ -50,7 +50,7 @@
                 {% set css = "fas fa-sort" %}
               {% endif %}
 
-            <a class="{{ css }}" href="{{ url_for('tags',
+            <a class="{{ css }}" href="{{ url_for('admin_tags',
                                           q=q,
                                           sort=field,
                                           direction=direction,
@@ -74,7 +74,7 @@
                 {% set css = "fas fa-sort" %}
               {% endif %}
 
-            <a class="{{ css }}" href="{{ url_for('tags',
+            <a class="{{ css }}" href="{{ url_for('admin_tags',
                                           q=q,
                                           sort=field,
                                           direction=direction,
@@ -110,7 +110,7 @@
                 {{ tag.created_on.strftime('%B %d, %Y') }}
             </td>
             <td>
-              <a href="{{ url_for('edit_tag', slug=tag.slug) }}">
+              <a href="{{ url_for('update_tag', slug=tag.slug) }}">
                 <div class="pull-left">
                   <i><img class="img-fluid rounded-circle article-img"
                           src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" >

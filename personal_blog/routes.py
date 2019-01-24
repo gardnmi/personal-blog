@@ -74,11 +74,17 @@ def about():
 # --------------------------------------------POSTS-------------------------------------------- #
 
 @app.route("/")
-@app.route("/blog")
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', posts=posts)
+    return render_template('home.html', posts=posts, title='Michael G.')
+
+
+@app.route("/blog")
+def blog():
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template('home.html', posts=posts, title='Blog')
 
 
 @app.route("/post/new", methods=['GET', 'POST'])
@@ -196,9 +202,9 @@ def new_tag():
     return render_template('create_update_tag.html', title='New Tag', form=form, legend='New Tag')
 
 
-@app.route("/admin/tags/edit_tag/<string:slug>", methods=['GET', 'POST'])
+@app.route("/admin/tags/update_tag/<string:slug>", methods=['GET', 'POST'])
 @login_required
-def edit_tag(slug):
+def update_tag(slug):
     form = TagForm()
 
     tag = Tag.query.filter(Tag.slug.contains(slug)).first_or_404()
@@ -228,7 +234,7 @@ def edit_tag(slug):
 
 @app.route("/admin/tags", methods=['GET', 'POST'])
 @login_required
-def tags():
+def admin_tags():
 
     search_form = SearchForm()
     bulk_form = BulkDeleteForm()
@@ -242,11 +248,11 @@ def tags():
         .filter(Tag.search(request.args.get('q', ''))) \
         .order_by(text(order_values)).all()
 
-    return render_template('tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Tags')
+    return render_template('admin_tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Tags')
 
 
 @app.route('/admin/tags/bulk_delete', methods=['POST'])
-def tags_bulk_delete():
+def admin_tags_bulk_delete():
     form = BulkDeleteForm()
 
     if form.validate_on_submit():
@@ -262,12 +268,47 @@ def tags_bulk_delete():
     else:
         flash('No tags were deleted, something went wrong.', 'error')
 
-    return redirect(url_for('tags'))
+    return redirect(url_for('admin_tags'))
 
 
+@app.route("/admin/posts", methods=['GET', 'POST'])
+@login_required
+def admin_posts():
+
+    search_form = SearchForm()
+    bulk_form = BulkDeleteForm()
+
+    sort_by = Post.sort_by(request.args.get('sort', 'created_on'),
+                           request.args.get('direction', 'desc'))
+
+    order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
+
+    # change to User.query so I can access both User and Tag
+    posts = Post.query \
+        .filter(Post.search(request.args.get('q', ''))) \
+        .order_by(text(order_values)).all()
+
+    return render_template('admin_posts.html', form=search_form, bulk_form=bulk_form, posts=posts, title='Posts')
 
 
+@app.route('/admin/posts/bulk_delete', methods=['POST'])
+def admin_posts_bulk_delete():
+    form = BulkDeleteForm()
 
+    if form.validate_on_submit():
+        ids = Post.get_bulk_action_ids(request.form.get('scope'),
+                                       request.form.getlist('bulk_ids'),
+                                       query=request.args.get('q', '')
+                                       )
+
+        delete_count = Post.bulk_delete(ids)
+
+        flash('{0} post(s) were scheduled to be deleted.'.format(delete_count),
+              'success')
+    else:
+        flash('No posts were deleted, something went wrong.', 'error')
+
+    return redirect(url_for('admin_posts'))
 
 
 # @app.route("/user/<string:username>")

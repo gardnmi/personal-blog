@@ -1,15 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="blog-header">
-   <div class="container">
-      <h1 class="blog-title" align="center">Blog</h1>
-      <p class="lead blog-description" align="center">
-         Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-         Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-         Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
-      </p>
-   </div>
-</div>
+
+      {% if title == 'Blog' %}
+      <div class="blog-header">
+         <div class="container">
+            <h1 class="blog-title" align="center">Blog</h1>
+         </div>
+      </div>
+      {% else %}
+      <div class="blog-header">
+         <div class="container">
+            <h1 class="blog-title" align="center">Michael G.</h1>
+            <p class="lead blog-description" align="center">
+               Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+               Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
+               Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
+            </p>
+         </div>
+      </div>
+      {% endif %}
+
 <div class="blog-post">
    <div class="container">
       {% for post in posts.items %}

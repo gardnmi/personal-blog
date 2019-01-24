@@ -14,14 +14,14 @@
             </a>
           </li>
           <li class="nav-item">
-            {% if 'Tags' == title  %}
+            {% if 'Posts' == title  %}
               {% set css = "nav-link active" %}
             {% else %}
               {% set css = "nav-link" %}
             {% endif %}
-            <a class= "{{ css }}" href="{{ url_for('tags') }}">
-            <span data-feather="tag"></span>
-            Tags
+            <a class="{{ css }}" href="{{ url_for('admin_posts') }}">
+            <span data-feather="align-center"></span>
+              Posts
             </a>
           </li>
           <li class="nav-item">
@@ -36,18 +36,17 @@
             </a>
           </li>
           <li class="nav-item">
-            {% if 'Posts' == title  %}
+            {% if 'Tags' == title  %}
               {% set css = "nav-link active" %}
             {% else %}
               {% set css = "nav-link" %}
             {% endif %}
-            <a class="{{ css }}" href="#">
-            <span data-feather="align-center"></span>
-              Posts
+            <a class= "{{ css }}" href="{{ url_for('admin_tags') }}">
+            <span data-feather="tag"></span>
+            Tags
             </a>
           </li>
         </ul>
-        
       </div>
     </nav>
 

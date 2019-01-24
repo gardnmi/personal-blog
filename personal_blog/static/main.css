@@ -6,24 +6,48 @@ a:hover {
   color: #ff4836;
 }
 
+.blog-title {
+  font-family: 'PT Mono', monospace;
+}
+
+.lead {
+  font-family: 'Zilla Slab', serif;
+}
+
+.navbar{
+  font-family: 'PT Mono', monospace;
+}
+
+.blog-post-meta {
+  font-family: 'Zilla Slab', serif;
+}
+
+.top-buffer { margin-top: -1px;}
 
 body {
   background: #fffefa;
   color: #333333;
   margin-top: 5rem;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  color: #555;
+  font-family: 'Zilla Slab', serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
+  font-family: 'Zilla Slab', serif;
 }
+
+p {
+    font-size: 1.1rem;
+}
+
 
 .bg-steel {
   background-image: url("images/design/retro_stripes_fade.jpg");
   background-color: #1d6184;
-  background-size: 696px 82px;
+  background-size: 696px 51px;
   background-repeat: repeat-x;
 }
 
@@ -173,7 +197,7 @@ tr:hover {
     font-weight: 500;
     font-size: .875rem;
     text-align: left;
-    
+
 }
 
 .nav-link {
@@ -183,8 +207,10 @@ tr:hover {
 }
 
 .sidebar{
-    padding-left: 0px; 
+    padding-left: 0px;
+    padding-top: 8px;
 }
+
 
 #create{
     font-weight: 500;
