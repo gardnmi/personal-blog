@@ -2,7 +2,6 @@ from datetime import datetime
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from personal_blog import db, login_manager, app
 from flask_login import UserMixin
-from sqlalchemy import or_
 from personal_blog.lib.util_sqlalchemy import ResourceMixin
 
 
@@ -77,3 +76,6 @@ class Tag(ResourceMixin, db.Model):
         search_chain = (Tag.tag_name.ilike(search_query))
 
         return search_chain
+
+    def __repr__(self):
+        return f"Tag('{self.tag_name}', '{self.image_file}')"

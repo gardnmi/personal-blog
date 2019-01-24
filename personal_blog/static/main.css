@@ -59,7 +59,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .article-img {
-  width: 50px;
+  width: 45px;
+  padding: .5rem ;
 
 }
 
@@ -160,3 +161,38 @@ tr:hover {
 
 .sidebar .nav-link.active {
     color: #ff4836;
+}
+
+.feather {
+    width: 16px;
+    height: 16px;
+    vertical-align: text-bottom;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    font-size: .875rem;
+    text-align: left;
+    
+}
+
+.nav-link {
+    display: block;
+    padding: .5rem 1rem;
+    text-align: left;
+}
+
+.sidebar{
+    padding-left: 0px; 
+}
+
+#create{
+    font-weight: 500;
+    font-size: .875rem;
+    text-align: right;
+}
+
+.fa-sort:before {
+    content: "\f0dc";
+    padding: .5rem ;
+}

@@ -44,8 +44,9 @@ class PostForm(FlaskForm):
 
 
 class TagForm(FlaskForm):
-    name = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
-    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    name = StringField('Tag Name', validators=[DataRequired(), Length(min=2, max=20)])
+    picture = FileField('Update Tag Picture', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Submit')
 
 
 class RequestResetForm(FlaskForm):

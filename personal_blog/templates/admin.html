@@ -4,9 +4,15 @@
 <div class="container-fluid">
   <pre></pre>
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <nav class="col-md-2 d-none d-md-block sidebar" id="sidbar">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class= "nav-link" href="">
+            <span data-feather="home"></span>
+            Dashboard
+            </a>
+          </li>
           <li class="nav-item">
             {% if 'Tags' == title  %}
               {% set css = "nav-link active" %}
@@ -14,6 +20,7 @@
               {% set css = "nav-link" %}
             {% endif %}
             <a class= "{{ css }}" href="{{ url_for('tags') }}">
+            <span data-feather="tag"></span>
             Tags
             </a>
           </li>
@@ -24,6 +31,7 @@
               {% set css = "nav-link" %}
             {% endif %}
             <a class="{{ css }}" href="#">
+            <span data-feather="users"></span>
               Accounts
             </a>
           </li>
@@ -34,10 +42,12 @@
               {% set css = "nav-link" %}
             {% endif %}
             <a class="{{ css }}" href="#">
+            <span data-feather="align-center"></span>
               Posts
             </a>
           </li>
         </ul>
+        
       </div>
     </nav>
 
@@ -50,4 +60,8 @@
     </main>
   </div>
 </div>
+<script>
+  feather.replace()
+</script>
+
 {% endblock content %}

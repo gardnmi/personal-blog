@@ -2,7 +2,7 @@
 {% block content %}
 <div class="blog-header">
    <div class="container">
-      <h1 class="blog-title" align="center">Name Goes Here</h1>
+      <h1 class="blog-title" align="center">Blog</h1>
       <p class="lead blog-description" align="center">
          Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
          Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
@@ -43,7 +43,7 @@
    </div>
    </div> -->
 <div class="row">
-   <div class="col-sm-8 offset-sm-1 blog-main">
+   <div class="col-sm-8 blog-main">
       {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
       {% if page_num %}
       {% if posts.page == page_num %}

@@ -1,11 +1,10 @@
 {% extends "admin.html" %}
 
 {% block admin %}
-
+<a class= "nav-link" href="{{ url_for('new_tag') }}" id= "create"> <span data-feather="plus-square"></span> Create New Tag </a>
   <form action="{{ url_for('tags') }}" method="get"
         id="" class="" role="form">
     {{ form.hidden_tag() }}
-    <pre> </pre>
     <div class="form-group">
       <input type="text" class="form-control"
              id="q" name="q" value="{{ request.args.get('q', '') }}"
@@ -24,7 +23,7 @@
     {% endif %}
   {% else %}
 
-  <form action="{{ url_for('tags_bulk_delete') }}" method="get"
+  <form action="{{ url_for('tags_bulk_delete') }}" method="post"
         id="" class="" role="form">
     {{ form.hidden_tag() }}
       <table class="table">
@@ -111,7 +110,7 @@
                 {{ tag.created_on.strftime('%B %d, %Y') }}
             </td>
             <td>
-              <a href="{{ url_for('tag_posts', slug=tag.slug) }}">
+              <a href="{{ url_for('edit_tag', slug=tag.slug) }}">
                 <div class="pull-left">
                   <i><img class="img-fluid rounded-circle article-img"
                           src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" >
