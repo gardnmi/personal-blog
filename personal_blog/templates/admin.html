@@ -25,12 +25,12 @@
             </a>
           </li>
           <li class="nav-item">
-            {% if 'Accounts' == title  %}
+            {% if 'Users' == title  %}
               {% set css = "nav-link active" %}
             {% else %}
               {% set css = "nav-link" %}
             {% endif %}
-            <a class="{{ css }}" href="#">
+            <a class="{{ css }}" href="{{ url_for('admin_users') }}">
             <span data-feather="users"></span>
               Accounts
             </a>

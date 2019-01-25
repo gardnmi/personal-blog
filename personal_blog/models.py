@@ -16,9 +16,13 @@ class User(ResourceMixin, UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     alias = db.Column(db.String(20), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.username}', '{self.image_file}')"
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
@@ -32,9 +36,6 @@ class User(ResourceMixin, UserMixin, db.Model):
         except:
             return None
         return User.query.get(user_id)
-
-    def __repr__(self):
-        return f"User('{self.username}', '{self.image_file}')"
 
 
 posts_and_tags = db.Table('posts_and_tags',
@@ -56,24 +57,6 @@ class Post(ResourceMixin, db.Model):
     def __repr__(self):
         return f"Post('{self.title}', '{self.date_posted}')"
 
-    # Move to User so I can access User and Post
-    @classmethod
-    def search(cls, query):
-        """
-        Search a resource by 1 or more fields.
-
-        :param query: Search query
-        :type query: str
-        :return: SQLAlchemy filter
-        """
-        if not query:
-            return ''
-
-        search_query = '%{0}%'.format(query)
-        search_chain = (Post.title.ilike(search_query))
-
-        return search_chain
-
 
 class Tag(ResourceMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -83,20 +66,3 @@ class Tag(ResourceMixin, db.Model):
 
     def __repr__(self):
         return f"Tag('{self.tag_name}', '{self.image_file}')"
-
-    @classmethod
-    def search(cls, query):
-        """
-        Search a resource by 1 or more fields.
-
-        :param query: Search query
-        :type query: str
-        :return: SQLAlchemy filter
-        """
-        if not query:
-            return ''
-
-        search_query = '%{0}%'.format(query)
-        search_chain = (Tag.tag_name.ilike(search_query))
-
-        return search_chain

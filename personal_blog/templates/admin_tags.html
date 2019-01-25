@@ -61,6 +61,30 @@
               {% set sort = request.args.get('sort', None) %}
               {% set direction = request.args.get('direction', 'asc') %}
               {% set q = request.args.get('q', '') %}
+              {% set field = 'updated_on' %}
+              {% set label = 'Updated On' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
               {% set field = 'tag_name' %}
               {% set label = 'Tag' %}
 
@@ -108,6 +132,9 @@
             </td>
             <td>
                 {{ tag.created_on.strftime('%B %d, %Y') }}
+            </td>
+             <td>
+                {{ tag.updated_on.strftime('%B %d, %Y') }}
             </td>
             <td>
               <a href="{{ url_for('update_tag', slug=tag.slug) }}">

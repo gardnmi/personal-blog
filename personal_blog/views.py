@@ -1,11 +1,12 @@
 from flask import render_template, url_for, flash, redirect, request, abort
 from personal_blog import app, db, bcrypt
-from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm, TagForm
+from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm, TagForm, RegistrationForm
 from personal_blog.models import User, Post, Tag
 from personal_blog.utils import save_picture
 from flask_login import login_user, current_user, logout_user, login_required
 from slugify import slugify
 from sqlalchemy import text
+from sqlalchemy import or_
 # from flask_mail import Message
 
 
@@ -60,7 +61,7 @@ def account():
         form.username.data = current_user.username
         form.alias.data = current_user.alias
 
-    image_file = url_for('static', filename='images/profile_pics/' + current_user.image_file)
+    image_file = url_for('static', filename='images/profile/' + current_user.image_file)
 
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
@@ -71,12 +72,30 @@ def about():
     return render_template('about.html', title='About')
 
 
+@app.route("/register", methods=['GET', 'POST'])
+@login_required
+def register():
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user.save()
+
+        flash('Account has been created!', 'success')
+        return redirect(url_for('admin_users'))
+    return render_template('register.html', title='Register', form=form)
+
+
 # --------------------------------------------POSTS-------------------------------------------- #
 
 @app.route("/")
 def home():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
+    print(Post.query.filter(Post.title.ilike('%blog%'), Post.slug.ilike('%blog%')))
+
     return render_template('home.html', posts=posts, title='Michael G.')
 
 
@@ -197,12 +216,12 @@ def new_tag():
 
         flash('Your tag has been created!', 'success')
 
-        return redirect(url_for('tags'))
+        return redirect(url_for('admin_tags'))
 
     return render_template('create_update_tag.html', title='New Tag', form=form, legend='New Tag')
 
 
-@app.route("/admin/tags/update_tag/<string:slug>", methods=['GET', 'POST'])
+@app.route("/tags/update_tag/<string:slug>", methods=['GET', 'POST'])
 @login_required
 def update_tag(slug):
     form = TagForm()
@@ -221,7 +240,7 @@ def update_tag(slug):
 
         flash('Tags has been updated!', 'success')
 
-        return redirect(url_for('tags'))
+        return redirect(url_for('admin_tags'))
 
     elif request.method == 'GET':
         form.name.data = tag.tag_name
@@ -244,14 +263,17 @@ def admin_tags():
 
     order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
 
+    search = '%{0}%'.format(request.args.get('q', ''))
+
     tags = Tag.query \
-        .filter(Tag.search(request.args.get('q', ''))) \
+        .filter(Tag.tag_name.ilike(search)) \
         .order_by(text(order_values)).all()
 
     return render_template('admin_tags.html', form=search_form, bulk_form=bulk_form, tags=tags, title='Tags')
 
 
 @app.route('/admin/tags/bulk_delete', methods=['POST'])
+@login_required
 def admin_tags_bulk_delete():
     form = BulkDeleteForm()
 
@@ -283,15 +305,17 @@ def admin_posts():
 
     order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
 
-    # change to User.query so I can access both User and Tag
+    search = '%{0}%'.format(request.args.get('q', ''))
+
     posts = Post.query \
-        .filter(Post.search(request.args.get('q', ''))) \
+        .filter(or_(Post.title.ilike(search), Post.title.ilike(search))) \
         .order_by(text(order_values)).all()
 
     return render_template('admin_posts.html', form=search_form, bulk_form=bulk_form, posts=posts, title='Posts')
 
 
 @app.route('/admin/posts/bulk_delete', methods=['POST'])
+@login_required
 def admin_posts_bulk_delete():
     form = BulkDeleteForm()
 
@@ -309,6 +333,48 @@ def admin_posts_bulk_delete():
         flash('No posts were deleted, something went wrong.', 'error')
 
     return redirect(url_for('admin_posts'))
+
+
+@app.route("/admin/users", methods=['GET', 'POST'])
+@login_required
+def admin_users():
+
+    search_form = SearchForm()
+    bulk_form = BulkDeleteForm()
+
+    sort_by = User.sort_by(request.args.get('sort', 'created_on'),
+                           request.args.get('direction', 'desc'))
+
+    order_values = '{0} {1}'.format(sort_by[0], sort_by[1])
+
+    search = '%{0}%'.format(request.args.get('q', ''))
+
+    users = User.query \
+        .filter(or_(User.alias.ilike(search), User.username.ilike(search))) \
+        .order_by(text(order_values)).all()
+
+    return render_template('admin_users.html', form=search_form, bulk_form=bulk_form, users=users, title='Users')
+
+
+@app.route('/admin/users/bulk_delete', methods=['POST'])
+@login_required
+def admin_users_bulk_delete():
+    form = BulkDeleteForm()
+
+    if form.validate_on_submit():
+        ids = User.get_bulk_action_ids(request.form.get('scope'),
+                                       request.form.getlist('bulk_ids'),
+                                       query=request.args.get('q', '')
+                                       )
+
+        delete_count = User.bulk_delete(ids)
+
+        flash('{0} user(s) were scheduled to be deleted.'.format(delete_count),
+              'success')
+    else:
+        flash('No users were deleted, something went wrong.', 'error')
+
+    return redirect(url_for('admin_users'))
 
 
 # @app.route("/user/<string:username>")

@@ -21,7 +21,7 @@ def my_function():
             db.create_all()
 
             hashed_password = bcrypt.generate_password_hash(os.environ.get('BLOG_PASSWORD')).decode('utf-8')
-            user = User(username='gardnmi', alias='Michael G.', password=hashed_password)
+            user = User(username='gardnmi', alias='Michael G.', password=hashed_password, email='gardnmi@gmail.com')
             db.session.add(user)
             db.session.commit()
 
