@@ -3,8 +3,6 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from personal_blog import db, login_manager, app
 from flask_login import UserMixin
 from personal_blog.lib.util_sqlalchemy import ResourceMixin
-from sqlalchemy import or_
-from sqlalchemy.orm import aliased
 
 
 @login_manager.user_loader
@@ -17,6 +15,7 @@ class User(ResourceMixin, UserMixin, db.Model):
     username = db.Column(db.String(20), unique=True, nullable=False)
     alias = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    admin = db.Column(db.Boolean(), default=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)

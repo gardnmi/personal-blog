@@ -81,8 +81,10 @@ class BulkDeleteForm(FlaskForm):
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
+    alias = StringField('Alias', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    admin = BooleanField('Make Admin')
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
@@ -94,3 +96,8 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
+
+    def validate_alias(self, alias):
+        user = User.query.filter_by(alias=alias.data).first()
+        if user:
+            raise ValidationError('That alias is taken. Please choose a different one.')

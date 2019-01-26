@@ -150,6 +150,29 @@
                                           direction=direction,
                                           **request.view_args) }}">{{ label }}</a>
             </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'admin' %}
+              {% set label = 'Admin' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+            </th>
             <th id="bulk_actions" colspan="4">
               <div class="form-inline">
                 <select class="form-control"
@@ -195,6 +218,18 @@
             </td>
             <td>
                 {{ user.email }}
+            </td>
+            <td>
+                {% if user.admin %}
+                <span data-feather="shield"></span> Admin
+                {% else %}
+                <span data-feather="user"></span> User
+                <div>
+                <small class="text-muted ml-2">
+                    <a href="{{ url_for('make_admin', id=user.id) }}">Make Admin</a>
+                </small>
+                </div>
+                {% endif %}
             </td>
           </tr>
         {% endfor %}

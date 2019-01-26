@@ -2,7 +2,7 @@ from flask import render_template, url_for, flash, redirect, request, abort
 from personal_blog import app, db, bcrypt
 from personal_blog.forms import LoginForm, UpdateAccountForm, PostForm, SearchForm, BulkDeleteForm, TagForm, RegistrationForm, RequestResetForm, ResetPasswordForm
 from personal_blog.models import User, Post, Tag
-from personal_blog.utils import save_picture
+from personal_blog.utils import save_picture, send_reset_email
 from flask_login import login_user, current_user, logout_user, login_required
 from slugify import slugify
 from sqlalchemy import text
@@ -85,12 +85,13 @@ def account():
 @app.route("/register", methods=['GET', 'POST'])
 @login_required
 def register():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('home'))
+    if current_user.is_authenticated and not current_user.admin:
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        user = User(username=form.username.data, alias=form.alias.data, email=form.email.data,
+                    password=hashed_password, admin=form.admin.data)
         user.save()
 
         flash('Account has been created!', 'success')
@@ -139,6 +140,20 @@ def reset_token(token):
 
     return render_template('reset_token.html', title='Reset Password', form=form)
 
+
+@app.route("/make_admin/<id>", methods=['GET', 'POST'])
+@login_required
+def make_admin(id):
+    if current_user.is_authenticated and not current_user.admin:
+        flash('You do not have permission.', 'warning')
+
+        return redirect(url_for('admin_users'))
+    else:
+        user = User.query.filter_by(id=id).first()
+        user.admin = True
+        user.save()
+
+        return redirect(url_for('admin_users'))
 
 # --------------------------------------------POSTS-------------------------------------------- #
 
@@ -426,18 +441,3 @@ def admin_users_bulk_delete():
 #         .order_by(Post.date_posted.desc())\
 #         .paginate(page=page, per_page=5)
 #     return render_template('user_posts.html', posts=posts, user=user)
-
-
-# @app.route("/register", methods=['GET', 'POST'])
-# def register():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('home'))
-#     form = RegistrationForm()
-#     if form.validate_on_submit():
-#         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-#         user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-#         db.session.add(user)
-#         db.session.commit()
-#         flash('Your account has been created! You are now able to log in', 'success')
-#         return redirect(url_for('login'))
-#     return render_template('register.html', title='Register', form=form)

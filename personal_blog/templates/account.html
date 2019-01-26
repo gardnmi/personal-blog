@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
+
+{% if current_user.admin %}
+<a class= "nav-link" href="{{ url_for('admin_posts') }}" id= "create"> <span data-feather="pie-chart"></span> Go to Admin Dashboard </a>
+{% endif %}
+
 <div class="row" id="blog_post">
 <div class="col-sm-12 blog-main">
 
