@@ -158,13 +158,6 @@ def make_admin(id):
 # --------------------------------------------POSTS-------------------------------------------- #
 
 
-@app.route("/blog")
-def blog():
-    page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', posts=posts, title='Blog')
-
-
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():

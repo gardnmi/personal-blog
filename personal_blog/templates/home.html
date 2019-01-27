@@ -1,24 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 
-      {% if title == 'Blog' %}
-      <div class="blog-header">
-         <div class="container">
-            <h1 class="blog-title" align="center">Blog</h1>
-         </div>
-      </div>
-      {% else %}
-      <div class="blog-header">
-         <div class="container">
-            <h1 class="blog-title" align="center">Michael G.</h1>
-            <p class="lead blog-description" align="center">
-               Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-               Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
-               Sed posuere consectetur est at lobortis. Cras mattis consectetur purus sit amet fermentum.
-            </p>
-         </div>
-      </div>
-      {% endif %}
+<div class="blog-header">
+   <div class="container">
+      <h1 class="blog-title" align="center">Hello World!</h1>
+      <p class="lead blog-description" align="left">
+         Many self-taught coders like myself would have failed if it weren't for the vast amount of knowledge 
+         shared freely on the internet.  This is my effort to give back, if just a little.  
+         I blog mostly about programming focusing on Python and Machine Learning but I do occasionally blog about other 
+         topics that I find interesting.
+   </div>
+</div>
+
 
 <div class="blog-post">
    <div class="container">
@@ -36,7 +29,7 @@
                   </a>
                {% endfor %}
                   </div>
-                  <p class="article-content">{{ post.content| truncate(800) | safe }}</p>
+                  <p class="article-content">{{ post.content | truncate(800) | safe }}</p>
                </div>
                <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
             </div>

@@ -12,6 +12,8 @@ a:hover {
 
 .lead {
   font-family: 'Zilla Slab', serif;
+  text-indent: 30px;
+
 }
 
 .navbar{
