@@ -2,25 +2,24 @@ name: blog
 channels:
   - defaults
 dependencies:
-  - ca-certificates=2018.03.07=0
-  - certifi=2018.11.29=py37_0
-  - click=7.0=py37_0
-  - flask=1.0.2=py37_1
-  - itsdangerous=1.1.0=py37_0
-  - jinja2=2.10=py37_0
-  - pip=18.1=py37_0
-  - werkzeug=0.14.1=py37_0
-  - wheel=0.32.3=py37_0
-
+  - ca-certificates=2018.03.07
+  - certifi=2018.11.29
+  - click=7.0
+  - flask=1.0.2
+  - itsdangerous=1.1.0
+  - jinja2=2.10
+  - markupsafe=1.1.0
+  - openssl=1.1.1a
+  - pip=18.1
+  - python=3.7.2
+  - setuptools=40.6.3
+  - sqlite=3.26.0
+  - vc=14.1
+  - vs2015_runtime=14.15.26706
+  - werkzeug=0.14.1
+  - wheel=0.32.3
+  - wincertstore=0.2
   - pip:
-    - vc==14.1
-    - markupsafe==1.1.0
-    - wincertstore==0.2
-    - openssl==1.1.1a    
-    - python==3.7.2
-    - vs2015_runtime==14.15.26706
-    - setuptools==40.6.3
-    - sqlite==3.26.0
     - bcrypt==3.1.6
     - blinker==1.4
     - cffi==1.11.5
@@ -32,6 +31,7 @@ dependencies:
     - pillow==5.4.1
     - pycparser==2.19
     - python-slugify==2.0.1
+    - pytz==2018.9
     - six==1.12.0
     - sqlalchemy==1.2.16
     - sqlalchemy-utils==0.33.11
