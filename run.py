@@ -1,7 +1,19 @@
 import os
+import json
+import platform
 from sqlalchemy_utils import database_exists
 from personal_blog import app, db, bcrypt
 from personal_blog.models import User, Post, Tag
+
+
+if platform.system() != 'Windows':
+    with open('/etc/blog_config.json') as config_file:
+        config = json.load(config_file)
+        database = config.get('SQLALCHEMY_DATABASE_URI')
+        blog_pass = config.get('BLOG_PASSWORD')
+else:
+    database = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    blog_pass = os.environ.get('BLOG_PASSWORD')
 
 
 def setup():
@@ -10,14 +22,14 @@ def setup():
     os.chdir(database_directory)
 
     with app.app_context():
-        if database_exists(os.environ.get('SQLALCHEMY_DATABASE_URI')):
+        if database_exists(database):
             os.chdir(current_file_directory)
         else:
             os.chdir(current_file_directory)
             db.drop_all()
             db.create_all()
 
-            hashed_password = bcrypt.generate_password_hash(os.environ.get('BLOG_PASSWORD')).decode('utf-8')
+            hashed_password = bcrypt.generate_password_hash(blog_pass).decode('utf-8')
             user = User(username='gardnmi', alias='Michael G.', admin=True, password=hashed_password, email='gardnmi@gmail.com')
             db.session.add(user)
             db.session.commit()
