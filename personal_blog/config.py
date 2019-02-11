@@ -4,7 +4,7 @@ import json
 
 
 if platform.system() != 'Windows':
-    with open('/etc/bog_config.json') as config_file:
+    with open('/etc/blog_config.json') as config_file:
         config = json.load(config_file)
         config_exists = True
 else:
