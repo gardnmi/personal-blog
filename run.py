@@ -1,19 +1,23 @@
 import os
-import json
-import platform
+# import json
+# import platform
 from sqlalchemy_utils import database_exists
 from personal_blog import app, db, bcrypt
 from personal_blog.models import User, Post, Tag
+from personal_blog.config import Config
 
 
-if platform.system() != 'Windows':
-    with open('/etc/blog_config.json') as config_file:
-        config = json.load(config_file)
-        database = config.get('SQLALCHEMY_DATABASE_URI')
-        blog_pass = config.get('BLOG_PASSWORD')
-else:
-    database = os.environ.get('SQLALCHEMY_DATABASE_URI')
-    blog_pass = os.environ.get('BLOG_PASSWORD')
+database = Config.SQLALCHEMY_DATABASE_URI
+blog_pass = Config.BLOG_PASSWORD
+
+# if platform.system() != 'Windows':
+#     with open('/etc/blog_config.json') as config_file:
+#         config = json.load(config_file)
+#         database = config.get('SQLALCHEMY_DATABASE_URI')
+#         blog_pass = config.get('BLOG_PASSWORD')
+# else:
+#     database = os.environ.get('SQLALCHEMY_DATABASE_URI')
+#     blog_pass = os.environ.get('BLOG_PASSWORD')
 
 
 def setup():

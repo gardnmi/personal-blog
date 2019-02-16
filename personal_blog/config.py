@@ -8,7 +8,7 @@ if platform.system() != 'Windows':
         config = json.load(config_file)
         config_exists = True
 else:
-    pass
+    config_exists = False
 
 
 if config_exists:
@@ -20,6 +20,7 @@ if config_exists:
         MAIL_USE_TLS = True
         MAIL_USERNAME = config.get('MAIL_USERNAME')
         MAIL_PASSWORD = config.get('MAIL_PASSWORD')
+        BLOG_PASSWORD = config.get('BLOG_PASSWORD')
 else:
     class Config:
         SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -29,3 +30,4 @@ else:
         MAIL_USE_TLS = True
         MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
         MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+        BLOG_PASSWORD = os.environ.get('BLOG_PASSWORD')
