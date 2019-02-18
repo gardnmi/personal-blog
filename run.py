@@ -10,15 +10,6 @@ from personal_blog.config import Config
 database = Config.SQLALCHEMY_DATABASE_URI
 blog_pass = Config.BLOG_PASSWORD
 
-# if platform.system() != 'Windows':
-#     with open('/etc/blog_config.json') as config_file:
-#         config = json.load(config_file)
-#         database = config.get('SQLALCHEMY_DATABASE_URI')
-#         blog_pass = config.get('BLOG_PASSWORD')
-# else:
-#     database = os.environ.get('SQLALCHEMY_DATABASE_URI')
-#     blog_pass = os.environ.get('BLOG_PASSWORD')
-
 
 def setup():
     current_file_directory = os.path.dirname(os.path.realpath(__file__))
