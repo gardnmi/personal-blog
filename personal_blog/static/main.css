@@ -39,7 +39,8 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
   font-family: 'Zilla Slab', serif;
-  padding: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 p {
