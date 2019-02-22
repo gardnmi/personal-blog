@@ -1,8 +1,3 @@
-
-#Testing
 __pycache__/
 *.py[cod]
 *.db
-
-
-# End of https://www.gitignore.io/api/python

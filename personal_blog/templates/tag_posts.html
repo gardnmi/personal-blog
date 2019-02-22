@@ -15,7 +15,7 @@
                      <h2> <a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
                      <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
                   </div>
-                  <p class="article-content">{{ post.content | truncate(1000) | safe }}</p>
+                  <p class="article-content">{{ post.content | truncate(900) | safe }}</p>
                </div>
                <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
             </div>
