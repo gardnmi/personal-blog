@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="blog-header">
+   <div class="container">
+      <h1 class="blog-title" align="center">Hello World!</h1>
+      <p class="lead blog-description" align="left">
+         Many self-taught coders like myself would have failed if it weren't for the vast amount of knowledge 
+         shared freely on the internet.  This is my effort to give back, if just a little.  
+         I blog mostly about programming focusing on Python and Machine Learning but I do occasionally blog about other 
+         topics that I find interesting.
+   </div>
+</div>
+
+
+<div class="blog-post">
+   <div class="container">
+      {% for post in posts.items %}
+      <div class="row">
+         <article class="media content-section">
+            <div class="col-sm-12 blog-main">
+               <div class="media-body">
+                  <div class="article-metadata">
+                     <h2> <a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
+                     <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
+               {% for tag in post.tags %}
+                  <a href="{{ url_for('tag_posts', slug=tag.slug) }}", title="{{ tag.tag_name }}">
+                  <img class="img-fluid rounded-circle article-img" src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" >
+                  </a>
+               {% endfor %}
+                  </div>
+                  <p class="article-content">{{ post.content | truncate(1000) | safe }}</p>
+               </div>
+               <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
+            </div>
+         </article>
+      </div>
+      {% endfor %}
+   </div>
+</div>
+<!-- /.blog-sidebar -->
+<!--         <div class="col-sm-3 offset-sm-1 blog-sidebar">
+   <div class="sidebar-module sidebar-module-inset">
+     <h4>About</h4>
+     <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+   </div>
+   </div> -->
+<div class="row">
+   <div class="col-sm-8 blog-main">
+      {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+      {% if posts.page == page_num %}
+      <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+      {% else %}
+      <a class="btn btn-outline-primary mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+      {% endif %}
+      {% else %}
+      ...
+      {% endif %}
+      {% endfor %}
+   </div>
+</div>
+{% endblock content %}

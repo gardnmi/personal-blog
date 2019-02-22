@@ -1,0 +1,242 @@
+{% extends "admin.html" %}
+
+{% block admin %}
+<a class= "nav-link" href="{{ url_for('register') }}" id= "create"> <span data-feather="plus-square"></span> Create New Account </a>
+  <form action="{{ url_for('admin_users') }}" method="get"
+        id="" class="" role="form">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+      <input type="text" class="form-control"
+             id="q" name="q" value="{{ request.args.get('q', '') }}"
+             placeholder="Search by typing, then press enter...">
+    </div>
+  </form>
+
+  {% if users.total == 0 %}
+    <h3>No results found</h3>
+
+    {% if request.args.get('q') %}
+      <p>Try limiting or removing your search terms.</p>
+    {% else %}
+      <p>There are no users present,
+         you should <a href="{{ url_for('') }}">sign up</a>.</p>
+    {% endif %}
+  {% else %}
+
+  <form action="{{ url_for('admin_users_bulk_delete') }}" method="post"
+        id="" class="" role="form">
+    {{ form.hidden_tag() }}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              <label for="select_all"></label>
+              <input id="select_all" name="select_all" type="checkbox">
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'created_on' %}
+              {% set label = 'Created On' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'updated_on' %}
+              {% set label = 'Updated On' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'alias' %}
+              {% set label = 'Alias' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'username' %}
+              {% set label = 'UserName' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'email' %}
+              {% set label = 'Email' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+            </th>
+            <th class="col-header">
+              {% set sort = request.args.get('sort', None) %}
+              {% set direction = request.args.get('direction', 'asc') %}
+              {% set q = request.args.get('q', '') %}
+              {% set field = 'admin' %}
+              {% set label = 'Admin' %}
+
+              {% if sort == field and direction == 'asc' %}
+                {% set css = "fas fa-sort-down" %}
+                {% set direction = 'desc' %}
+              {% elif sort == field and direction == 'desc' %}
+                {% set css = "fas fa-sort-up" %}
+                {% set direction = 'asc' %}
+              {% else %}
+                {% set css = "fas fa-sort" %}
+              {% endif %}
+
+            <a class="{{ css }}" href="{{ url_for('admin_users',
+                                          q=q,
+                                          sort=field,
+                                          direction=direction,
+                                          **request.view_args) }}">{{ label }}</a>
+            </th>
+            <th id="bulk_actions" colspan="4">
+              <div class="form-inline">
+                <select class="form-control"
+                        id="scope"
+                        inline name="scope"
+                        required>
+                          <option value="all_selected_items">All selected items</option>
+                          <option value="all_search_results">All search results</option>
+                </select>
+                  <button type="submit"
+                          class="btn btn-danger btn-sm">
+                    Delete items
+                  </button>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+        {% for user in users %}
+          <tr>
+            <td>
+              <label for="bulk_ids"></label>
+              <input class="checkbox-item" id="bulk_ids" name="bulk_ids"
+                     type="checkbox" value="{{ user.id }}">
+            </td>
+            <td>
+                {{ user.created_on.strftime('%B %d, %Y') }}
+            </td>
+             <td>
+                {{ user.updated_on.strftime('%B %d, %Y') }}
+            </td>
+            <td>
+                <div class="pull-left">
+                  <i><img class="img-fluid rounded-circle article-img"
+                          src="{{ url_for('static', filename='images/profile/' + user.image_file) }}" >
+                          {{ user.alias }}
+                  </i>
+                </div>
+            </td>
+            <td>
+                {{ user.username }}
+            </td>
+            <td>
+                {{ user.email }}
+            </td>
+            <td>
+                {% if user.admin %}
+                <span data-feather="shield"></span> Admin
+                {% else %}
+                <span data-feather="user"></span> User
+                <div>
+                <small class="text-muted ml-2">
+                    <a href="{{ url_for('make_admin', id=user.id) }}">Make Admin</a>
+                </small>
+                </div>
+                {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  {% endif %}
+
+
+{% endblock admin %}

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class="mb-3" align="center">
+   <pre> </pre>
+   <img class="img-fluid" src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" id="tag_pictures" >
+</h1>
+<div class="row">
+   <div class="col-sm-12 blog-main">
+      {% for post in posts.items %}
+      <div class="blog-post">
+         <article class="media content-section">
+            <div class="col-sm-12 blog-main">
+               <div class="media-body">
+                  <div class="article-metadata">
+                     <h2> <a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h2>
+                     <p class="blog-post-meta">{{ post.date_posted.strftime('%B %d, %Y') }} by {{ post.author.alias }} </p>
+                  </div>
+                  <p class="article-content">{{ post.content | truncate(1000) | safe }}</p>
+               </div>
+               <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
+            </div>
+         </article>
+      </div>
+      {% endfor %}
+   </div>
+   {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+   {% if page_num %}
+   {% if posts.page == page_num %}
+   <a class="btn btn-info mb-4" href="{{ url_for('tag_posts', slug=tag.slug, page=page_num) }}">{{ page_num }}</a>
+   {% else %}
+   <a class="btn btn-outline-info mb-4" href="{{ url_for('tag_posts', slug=tag.slug, page=page_num) }}">{{ page_num }}</a>
+   {% endif %}
+   {% else %}
+   ...
+   {% endif %}
+   {% endfor %}
+</div>
+{% endblock content %}
