@@ -29,7 +29,7 @@
                   </a>
                {% endfor %}
                   </div>
-                  <p class="article-content">{{ post.content | truncate(900) | safe }}</p>
+                  <p class="article-content">{{ post.content | truncate(800) | safe }}</p>
                </div>
                <p class="quiet" style="text-align: right;"><a  href="{{ url_for('post', slug=post.slug) }}">Read more...</a></p>
             </div>
