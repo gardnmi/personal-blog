@@ -208,6 +208,7 @@ def update_post(slug):
 
     elif request.method == 'GET':
         form.title.data = post.title
+        form.description.data = post.description
         form.content.data = post.content
 
         tag_list = []
