@@ -3,8 +3,8 @@ import platform
 import json
 
 
-if platform.system() != 'Windows':
-    with open('/etc/blog_config.json') as config_file:
+if platform.system() != "Windows":
+    with open("/etc/blog_config.json") as config_file:
         config = json.load(config_file)
         config_exists = True
 else:
@@ -12,22 +12,26 @@ else:
 
 
 if config_exists:
+
     class Config:
-        SECRET_KEY = config.get('SECRET_KEY')
-        SQLALCHEMY_DATABASE_URI = config.get('SQLALCHEMY_DATABASE_URI')
-        MAIL_SERVER = 'smtp.googlemail.com'
+        SECRET_KEY = config.get("SECRET_KEY")
+        SQLALCHEMY_DATABASE_URI = config.get("SQLALCHEMY_DATABASE_URI")
+        MAIL_SERVER = "smtp.googlemail.com"
         MAIL_PORT = 587
         MAIL_USE_TLS = True
-        MAIL_USERNAME = config.get('MAIL_USERNAME')
-        MAIL_PASSWORD = config.get('MAIL_PASSWORD')
-        BLOG_PASSWORD = config.get('BLOG_PASSWORD')
+        MAIL_USERNAME = config.get("MAIL_USERNAME")
+        MAIL_PASSWORD = config.get("MAIL_PASSWORD")
+        BLOG_PASSWORD = config.get("BLOG_PASSWORD")
+
+
 else:
+
     class Config:
-        SECRET_KEY = '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'# os.environ.get('SECRET_KEY')
-        SQLALCHEMY_DATABASE_URI = "sqlite:///site.db" # os.environ.get('SQLALCHEMY_DATABASE_URI')
-        MAIL_SERVER = 'smtp.googlemail.com'
+        SECRET_KEY = os.environ.get("SECRET_KEY")
+        SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
+        MAIL_SERVER = "smtp.googlemail.com"
         MAIL_PORT = 587
         MAIL_USE_TLS = True
-        MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-        MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
-        BLOG_PASSWORD = '9643602' # os.environ.get('BLOG_PASSWORD')
+        MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+        MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+        BLOG_PASSWORD = os.environ.get("BLOG_PASSWORD")
