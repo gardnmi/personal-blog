@@ -1,108 +1,155 @@
 <!DOCTYPE html>
-<html>
-   <head>
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <!-- Bootstrap CSS -->
-      <link rel="stylesheet"
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-            integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-            crossorigin="anonymous">
-      <link rel="stylesheet"
-            type="text/css"
-            href="{{ url_for('static', filename='main.css') }}">
-      <link rel="stylesheet"
-            href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
-            integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-            crossorigin="anonymous">
-      <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Zilla+Slab" rel="stylesheet">
+<html lang="en">
 
-      <script src="https://unpkg.com/stackedit-js@1.0.7/docs/lib/stackedit.min.js"></script>
-      <script src="https://unpkg.com/turndown/dist/turndown.js"></script>
-      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-              integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-              crossorigin="anonymous"></script>
-      <script src="https://unpkg.com/feather-icons"></script>
+<head>
 
-      {% if title %}
-      <title> Blog - {{ title }}</title>
-      {% else %}
-      <title>Blog</title>
-      {% endif %}
-   </head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="">
+   <meta name="author" content="">
 
-   <body>
-      <header class="site-header">
-         <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-            <div class="container top-buffer">
+   {% if title %}
+   <title> Blog - {{ title }}</title>
+   {% else %}
+   <title>Blog</title>
+   {% endif %}
 
-               <button class="navbar-toggler"
-                       type="button"
-                       data-toggle="collapse"
-                       data-target="#navbarToggle"
-                       aria-controls="navbarToggle"
-                       aria-expanded="false"
-                       aria-label="Toggle navigation">
-                       <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="collapse navbar-collapse" id="navbarToggle">
-                  <div class="navbar-nav mr-auto">
-                     <a class="nav-item nav-link" href="{{ url_for('home') }}">//Michael G.</a>
-                  </div>
+   <!-- Bootstrap core CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.css') }}">
 
-                  <!-- Navbar Right Side -->
-                  <div class="navbar-nav">
-                     {% if current_user.is_authenticated %}
-                       <a class="nav-item nav-link" href="{{ url_for('account') }}">/account</a>
-                       <a class="nav-item nav-link" href="{{ url_for('logout') }}">/logout</a>
-                     {% else %}
-                       <a class="nav-item nav-link" href="https://www.linkedin.com/in/michael-gardner-38a29658/">/contact</a>
-                       <a class="nav-item nav-link" href="{{ url_for('login') }}">/login</a>
-                     {% endif %}
-                  </div>
-               </div>
-            </div>
-         </nav>
-      </header>
+   <!-- Custom fonts for this template -->
+   <link href="{{ url_for('static', filename='fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet'
+      type='text/css'>
+   <link
+      href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+      rel='stylesheet' type='text/css'>
 
-      <main role="main" class="container">
-         <div class="container">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }}">
-               {{ message }}
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
+   <!-- Custom styles for this template -->
+   <link href="{{ url_for('static', filename='clean-blog.css') }}" rel="stylesheet">
 
-            {% block content %}{% endblock %}
+   <!-- Jupyter CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='jupyter.css') }}">
+
+   <!-- Main CSS -->
+   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+
+   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+
+   <!-- Loading mathjax macro -->
+   <!-- Load mathjax -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS_HTML"></script>
+   <!-- MathJax configuration -->
+   <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+   <!-- End of mathjax configuration -->
+
+</head>
+
+<body>
+
+   <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container">
+         <a class="navbar-brand" href="{{ url_for('home') }}">//Michael G. </a>
+         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+            aria-label="Toggle navigation">
+            Menu
+            <i class="fas fa-bars"></i>
+         </button>
+
+         <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('home') }}">/home</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('about') }}">/about</a>
+               </li>
+               {% if current_user.is_authenticated %}
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('account') }}">/account</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('logout') }}">/logout</a>
+               </li>
+               {% else %}
+               <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('login') }}">/login</a>
+               </li>
+               {% endif %}
+            </ul>
          </div>
-      </main>
+      </div>
+   </nav>
 
-      <!-- Optional JavaScript -->
-      <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-      <script
-              src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-              integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-              crossorigin="anonymous">
-      </script>
-      <script
-              src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-              integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-              crossorigin="anonymous">
-      </script>
-      <script
-              src="{{ url_for('static', filename='scripts/main.js') }}">
-      </script>
-      <script
-              src="{{ url_for('static', filename='scripts/vendor/moment.min.js') }}">
-      </script>
-      <script>
-        feather.replace()
-      </script>
-   </body>
+   <!-- Main Content -->
+
+   {% block content %}
+
+   {% endblock %}
+
+   <hr>
+
+   <!-- Footer -->
+   <footer>
+      <div class="container">
+         <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+               <ul class="list-inline text-center">
+                  <li class="list-inline-item">
+                     <a href="https://www.linkedin.com/in/michael-gardner-38a29658/">
+                        <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                        </span>
+                     </a>
+                  </li>
+                  <li class="list-inline-item">
+                     <a href="https://github.com/gardnmi?tab=repositories">
+                        <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                        </span>
+                     </a>
+                  </li>
+               </ul>
+               <p class="copyright text-muted">Copyright &copy; Michael G. 2019</p>
+            </div>
+         </div>
+      </div>
+   </footer>
+
+   <!-- Bootstrap core JavaScript -->
+   <script src="{{ url_for('static', filename='scripts/vendor/jquery.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='scripts/vendor/bootstrap.bundle.min.js') }}"></script>
+
+   <!-- Custom scripts for this template -->
+   <script src="{{ url_for('static', filename='scripts/main.js') }}"> </script>
+   <script src="{{ url_for('static', filename='scripts/clean-blog.js') }}"></script>
+
+
+   <script src="{{ url_for('static', filename='scripts/vendor/moment.min.js') }}"> </script>
+
+
+</body>
+
 </html>

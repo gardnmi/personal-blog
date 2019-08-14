@@ -5,11 +5,9 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from personal_blog.config import Config
 
-
 # Initialize Application
 app = Flask(__name__)
 app.config.from_object(Config)
-
 
 # Extensions
 db = SQLAlchemy(app)
@@ -18,8 +16,8 @@ login_manager = LoginManager(app)
 mail = Mail(app)
 
 # Configuration
-login_manager.login_view = 'login'
-login_manager.login_message_category = 'info'
+login_manager.login_view = "login"
+login_manager.login_message_category = "info"
 
 
 from personal_blog import views, models, handlers

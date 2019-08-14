@@ -1,39 +1,67 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="row" id="blog_post">
-   <div class="col-sm-12 blog-main">
-      <form method="POST" action="" enctype="multipart/form-data">
-         {{ form.hidden_tag() }}
-         <fieldset class="form-group">
-            <legend class="border-bottom mb-4">{{ legend }}</legend>
-            <div class="form-group">
-               {{ form.name.label(class="form-control-label") }}
-               {% if form.name.errors %}
-               {{ form.name(class="form-control form-control-lg is-invalid") }}
-               <div class="invalid-feedback">
-                  {% for error in form.name.errors %}
-                  <span>{{ error }}</span>
-                  {% endfor %}
-               </div>
-               {% else %}
-               {{ form.name(class="form-control form-control-lg") }}
-               {% endif %}
+
+<header class="masthead" style="background-image: url(  )">
+   <div class="overlay"></div>
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-8 col-md-10 mx-auto">
+            <div class="site-heading" style="padding: 35px">
+
             </div>
-            <div class="form-group">
-                {{ form.picture.label() }}
-                {{ form.picture(class="form-control-file") }}
-                {% if form.picture.errors %}
-                    {% for error in form.picture.errors %}
-                        <span class="text-danger">{{ error }}</span></br>
-                    {% endfor %}
-                {% endif %}
-            </div>
-         </fieldset>
-         <div class="form-group">
-            {{ form.submit(class="btn btn-outline-primary") }}
          </div>
-      </form>
+      </div>
    </div>
-</div>
+</header>
+
+
+<article>
+   <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+         {% with messages = get_flashed_messages(with_categories=true) %}
+         {% if messages %}
+         {% for category, message in messages %}
+         <div class="alert alert-{{ category }}">
+            {{ message }}
+         </div>
+         {% endfor %}
+         {% endif %}
+         {% endwith %}
+
+         <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+               <legend class="border-bottom mb-4">{{ legend }}</legend>
+               <div class="form-group">
+                  {{ form.name.label(class="form-control-label") }}
+                  {% if form.name.errors %}
+                  {{ form.name(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                     {% for error in form.name.errors %}
+                     <span>{{ error }}</span>
+                     {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form.name(class="form-control form-control-lg") }}
+                  {% endif %}
+               </div>
+               <div class="form-group">
+                  {{ form.picture.label() }}
+                  {{ form.picture(class="form-control-file") }}
+                  {% if form.picture.errors %}
+                  {% for error in form.picture.errors %}
+                  <span class="text-danger">{{ error }}</span></br>
+                  {% endfor %}
+                  {% endif %}
+               </div>
+            </fieldset>
+            <div class="form-group">
+               {{ form.submit(class="btn btn-dark") }}
+            </div>
+         </form>
+      </div>
+   </div>
+</article>
 
 {% endblock content %}

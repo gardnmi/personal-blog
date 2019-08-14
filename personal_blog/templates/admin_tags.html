@@ -1,157 +1,149 @@
 {% extends "admin.html" %}
 
 {% block admin %}
-<a class= "nav-link" href="{{ url_for('new_tag') }}" id= "create"> <span data-feather="plus-square"></span> Create New Tag </a>
-  <form action="{{ url_for('admin_tags') }}" method="get"
-        id="" class="" role="form">
-    {{ form.hidden_tag() }}
-    <div class="form-group">
-      <input type="text" class="form-control"
-             id="q" name="q" value="{{ request.args.get('q', '') }}"
-             placeholder="Search by typing, then press enter...">
-    </div>
-  </form>
+<a class="nav-link" href="{{ url_for('new_tag') }}" id="create"> <i class="fas fa-plus"></i> Create New Tag </a>
+<form action="{{ url_for('admin_tags') }}" method="get" id="" class="" role="form">
+  {{ form.hidden_tag() }}
+  <div class="form-group">
+    <input type="text" class="form-control" id="q" name="q" value="{{ request.args.get('q', '') }}"
+      placeholder="Search by typing, then press enter...">
+  </div>
+</form>
 
-  {% if tags.total == 0 %}
-    <h3>No results found</h3>
+{% if tags.total == 0 %}
+<h3>No results found</h3>
 
-    {% if request.args.get('q') %}
-      <p>Try limiting or removing your search terms.</p>
-    {% else %}
-      <p>There are no tags present,
-         you should <a href="{{ url_for('') }}">sign up</a>.</p>
-    {% endif %}
-  {% else %}
+{% if request.args.get('q') %}
+<p>Try limiting or removing your search terms.</p>
+{% else %}
+<p>There are no tags present,
+  you should <a href="{{ url_for('') }}">sign up</a>.</p>
+{% endif %}
+{% else %}
 
-  <form action="{{ url_for('admin_tags_bulk_delete') }}" method="post"
-        id="" class="" role="form">
-    {{ form.hidden_tag() }}
-      <table class="table">
-        <thead>
-          <tr>
-            <th>
-              <label for="select_all"></label>
-              <input id="select_all" name="select_all" type="checkbox">
-            </th>
-            <th class="col-header">
-              {% set sort = request.args.get('sort', None) %}
-              {% set direction = request.args.get('direction', 'asc') %}
-              {% set q = request.args.get('q', '') %}
-              {% set field = 'created_on' %}
-              {% set label = 'Created On' %}
+<form action="{{ url_for('admin_tags_bulk_delete') }}" method="post" id="" class="" role="form">
+  {{ form.hidden_tag() }}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>
+          <label for="select_all"></label>
+          <input id="select_all" name="select_all" type="checkbox">
+        </th>
+        <th class="col-header">
+          {% set sort = request.args.get('sort', None) %}
+          {% set direction = request.args.get('direction', 'asc') %}
+          {% set q = request.args.get('q', '') %}
+          {% set field = 'created_on' %}
+          {% set label = 'Created On' %}
 
-              {% if sort == field and direction == 'asc' %}
-                {% set css = "fas fa-sort-down" %}
-                {% set direction = 'desc' %}
-              {% elif sort == field and direction == 'desc' %}
-                {% set css = "fas fa-sort-up" %}
-                {% set direction = 'asc' %}
-              {% else %}
-                {% set css = "fas fa-sort" %}
-              {% endif %}
+          {% if sort == field and direction == 'asc' %}
+          {% set css = "fas fa-sort-down" %}
+          {% set direction = 'desc' %}
+          {% elif sort == field and direction == 'desc' %}
+          {% set css = "fas fa-sort-up" %}
+          {% set direction = 'asc' %}
+          {% else %}
+          {% set css = "fas fa-sort" %}
+          {% endif %}
 
-            <a class="{{ css }}" href="{{ url_for('admin_tags',
+          <a class="{{ css }}" href="{{ url_for('admin_tags',
                                           q=q,
                                           sort=field,
                                           direction=direction,
                                           **request.view_args) }}">{{ label }}</a>
 
-            </th>
-            <th class="col-header">
-              {% set sort = request.args.get('sort', None) %}
-              {% set direction = request.args.get('direction', 'asc') %}
-              {% set q = request.args.get('q', '') %}
-              {% set field = 'updated_on' %}
-              {% set label = 'Updated On' %}
+        </th>
+        <th class="col-header">
+          {% set sort = request.args.get('sort', None) %}
+          {% set direction = request.args.get('direction', 'asc') %}
+          {% set q = request.args.get('q', '') %}
+          {% set field = 'updated_on' %}
+          {% set label = 'Updated On' %}
 
-              {% if sort == field and direction == 'asc' %}
-                {% set css = "fas fa-sort-down" %}
-                {% set direction = 'desc' %}
-              {% elif sort == field and direction == 'desc' %}
-                {% set css = "fas fa-sort-up" %}
-                {% set direction = 'asc' %}
-              {% else %}
-                {% set css = "fas fa-sort" %}
-              {% endif %}
+          {% if sort == field and direction == 'asc' %}
+          {% set css = "fas fa-sort-down" %}
+          {% set direction = 'desc' %}
+          {% elif sort == field and direction == 'desc' %}
+          {% set css = "fas fa-sort-up" %}
+          {% set direction = 'asc' %}
+          {% else %}
+          {% set css = "fas fa-sort" %}
+          {% endif %}
 
-            <a class="{{ css }}" href="{{ url_for('admin_users',
+          <a class="{{ css }}" href="{{ url_for('admin_users',
                                           q=q,
                                           sort=field,
                                           direction=direction,
                                           **request.view_args) }}">{{ label }}</a>
 
-            </th>
-            <th class="col-header">
-              {% set sort = request.args.get('sort', None) %}
-              {% set direction = request.args.get('direction', 'asc') %}
-              {% set q = request.args.get('q', '') %}
-              {% set field = 'tag_name' %}
-              {% set label = 'Tag' %}
+        </th>
+        <th class="col-header">
+          {% set sort = request.args.get('sort', None) %}
+          {% set direction = request.args.get('direction', 'asc') %}
+          {% set q = request.args.get('q', '') %}
+          {% set field = 'tag_name' %}
+          {% set label = 'Tag' %}
 
-              {% if sort == field and direction == 'asc' %}
-                {% set css = "fas fa-sort-down" %}
-                {% set direction = 'desc' %}
-              {% elif sort == field and direction == 'desc' %}
-                {% set css = "fas fa-sort-up" %}
-                {% set direction = 'asc' %}
-              {% else %}
-                {% set css = "fas fa-sort" %}
-              {% endif %}
+          {% if sort == field and direction == 'asc' %}
+          {% set css = "fas fa-sort-down" %}
+          {% set direction = 'desc' %}
+          {% elif sort == field and direction == 'desc' %}
+          {% set css = "fas fa-sort-up" %}
+          {% set direction = 'asc' %}
+          {% else %}
+          {% set css = "fas fa-sort" %}
+          {% endif %}
 
-            <a class="{{ css }}" href="{{ url_for('admin_tags',
+          <a class="{{ css }}" href="{{ url_for('admin_tags',
                                           q=q,
                                           sort=field,
                                           direction=direction,
                                           **request.view_args) }}">{{ label }}</a>
-            </th>
-            <th id="bulk_actions" colspan="4">
-              <div class="form-inline">
-                <select class="form-control"
-                        id="scope"
-                        inline name="scope"
-                        required>
-                          <option value="all_selected_items">All selected items</option>
-                          <option value="all_search_results">All search results</option>
-                </select>
-                  <button type="submit"
-                          class="btn btn-danger btn-sm">
-                    Delete items
-                  </button>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
+        </th>
+        <th id="bulk_actions" colspan="4">
+          <div class="form-inline">
+            <select class="form-control" id="scope" inline name="scope" required>
+              <option value="all_selected_items">All selected items</option>
+              <option value="all_search_results">All search results</option>
+            </select>
+            <button type="submit" class="btn btn-danger btn-sm">
+              Delete items
+            </button>
+          </div>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
 
-        {% for tag in tags %}
-          <tr>
-            <td>
-              <label for="bulk_ids"></label>
-              <input class="checkbox-item" id="bulk_ids" name="bulk_ids"
-                     type="checkbox" value="{{ tag.id }}">
-            </td>
-            <td>
-                {{ tag.created_on.strftime('%B %d, %Y') }}
-            </td>
-             <td>
-                {{ tag.updated_on.strftime('%B %d, %Y') }}
-            </td>
-            <td>
-              <a href="{{ url_for('update_tag', slug=tag.slug) }}">
-                <div class="pull-left">
-                  <i><img class="img-fluid rounded-circle article-img"
-                          src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}" >
-                          {{ tag.tag_name }}
-                  </i>
-                </div>
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  {% endif %}
+      {% for tag in tags %}
+      <tr>
+        <td>
+          <label for="bulk_ids"></label>
+          <input class="checkbox-item" id="bulk_ids" name="bulk_ids" type="checkbox" value="{{ tag.id }}">
+        </td>
+        <td>
+          {{ tag.created_on.strftime('%B %d, %Y') }}
+        </td>
+        <td>
+          {{ tag.updated_on.strftime('%B %d, %Y') }}
+        </td>
+        <td>
+          <a href="{{ url_for('update_tag', slug=tag.slug) }}">
+            <div class="pull-left">
+              <i><img class="img-fluid rounded-circle article-img"
+                  src="{{ url_for('static', filename='images/tags/' + tag.image_file) }}">
+                {{ tag.tag_name }}
+              </i>
+            </div>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% endif %}
 
 
 {% endblock admin %}

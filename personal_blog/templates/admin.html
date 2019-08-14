@@ -1,63 +1,77 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="container-fluid">
-  <pre></pre>
-  <div class="row">
-    <nav class="col-md-2 d-none d-md-block sidebar" id="sidbar">
-      <div class="sidebar-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class= "nav-link" href="">
-            <span data-feather="home"></span>
-            Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            {% if 'Posts' == title  %}
-              {% set css = "nav-link active" %}
-            {% else %}
-              {% set css = "nav-link" %}
-            {% endif %}
-            <a class="{{ css }}" href="{{ url_for('admin_posts') }}">
-            <span data-feather="align-center"></span>
-              Posts
-            </a>
-          </li>
-          <li class="nav-item">
-            {% if 'Users' == title  %}
-              {% set css = "nav-link active" %}
-            {% else %}
-              {% set css = "nav-link" %}
-            {% endif %}
-            <a class="{{ css }}" href="{{ url_for('admin_users') }}">
-            <span data-feather="users"></span>
-              Accounts
-            </a>
-          </li>
-          <li class="nav-item">
-            {% if 'Tags' == title  %}
-              {% set css = "nav-link active" %}
-            {% else %}
-              {% set css = "nav-link" %}
-            {% endif %}
-            <a class= "{{ css }}" href="{{ url_for('admin_tags') }}">
-            <span data-feather="tag"></span>
-            Tags
-            </a>
-          </li>
-        </ul>
+<header class="masthead" style="background-image: url(  )">
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading" style="padding: 35px">
+
+        </div>
       </div>
-    </nav>
-
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-
-
-      {% block admin %}{% endblock %}
-
-      </div>
-    </main>
+    </div>
   </div>
-</div>
+</header>
+
+<article>
+  <div class="container">
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="">
+                  <i class="fas fa-chart-bar"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                {% if 'Posts' == title  %}
+                {% set css = "nav-link active" %}
+                {% else %}
+                {% set css = "nav-link" %}
+                {% endif %}
+                <a class="{{ css }}" href="{{ url_for('admin_posts') }}">
+                  <i class="far fa-newspaper"></i>
+                  Posts
+                </a>
+              </li>
+              <li class="nav-item">
+                {% if 'Users' == title  %}
+                {% set css = "nav-link active" %}
+                {% else %}
+                {% set css = "nav-link" %}
+                {% endif %}
+                <a class="{{ css }}" href="{{ url_for('admin_users') }}">
+                  <i class="fas fa-user-friends"></i>
+                  Accounts
+                </a>
+              </li>
+              <li class="nav-item">
+                {% if 'Tags' == title  %}
+                {% set css = "nav-link active" %}
+                {% else %}
+                {% set css = "nav-link" %}
+                {% endif %}
+                <a class="{{ css }}" href="{{ url_for('admin_tags') }}">
+                  <i class="fas fa-tag"></i>
+                  Tags
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <main role="main" class="col-md-9 col-lg-9" style="font-size: 15px">
+
+
+          {% block admin %}{% endblock %}
+
+        </main>
+      </div>
+    </div>
+  </div>
+</article>
 
 {% endblock content %}

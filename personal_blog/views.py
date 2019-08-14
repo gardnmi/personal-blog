@@ -166,7 +166,7 @@ def new_post():
         tags = Tag.query.filter(Tag.id.in_(form.tags.data)).all()
 
         post = Post(title=form.title.data, slug=slugify(form.title.data),
-                    content=form.content.data, author=current_user, tags=tags)
+                    content=form.content.data, description=form.description.data, author=current_user, tags=tags)
 
         db.session.add(post)
         db.session.commit()
