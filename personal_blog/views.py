@@ -197,6 +197,7 @@ def update_post(slug):
     if form.validate_on_submit():
         tags = Tag.query.filter(Tag.slug.in_(form.tags.data)).all()
         post.title = form.title.data
+        post.description = form.description.data
         post.content = form.content.data
         post.tags = tags
 
